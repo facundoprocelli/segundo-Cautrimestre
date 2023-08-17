@@ -1,0 +1,72 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define dimencion 3
+
+
+
+/*
+9. Dados dos arreglos paralelos, uno con apellidos y otro con edades. Se debe hacer un programa para encontrar el apellido
+de la persona de mayor edad. Se debe modularizar.
+*/
+
+
+void cargarDatos(int edades[10], char apellidos[10][30]);
+int buscarMayor(int arreglo[], int dim);
+
+int main()
+{
+    int edades[dimencion];
+    char apellidos[dimencion][30];
+
+    cargarDatos(edades, apellidos);
+
+    int mayor = buscarMayor(edades, dimencion);
+
+    printf("El apellido de la persona mas grande es: %s", apellidos[mayor]);
+    return 0;
+}
+
+
+void cargarDatos(int edades[], char apellidos[dimencion][30])
+{
+    int i = 0;
+
+    for (i = 0; i < dimencion; i++)
+    {
+
+        printf("\nIngrese la edad: ");
+        scanf("%i", &edades[i]);
+        printf("Ingrese el apellido: ");
+        fflush(stdin);
+        gets(apellidos[i]);
+    }
+
+}
+
+
+int buscarMayor(int arreglo[], int dim)
+{
+    int i = 0;
+    int posMayor = i;
+    int mayor = arreglo[posMayor];
+
+
+
+    for( i = 0; i < 3; i++)
+    {
+
+
+        if (mayor < arreglo[i])
+        {
+            mayor = arreglo[posMayor];
+            posMayor = i;
+
+        }
+    }
+    return posMayor;
+}
+
