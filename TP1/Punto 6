@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+/*
+6. Dada una cadena de caracteres, hacer una función que determine si dicha cadena es palíndromo
+(se lee de igual forma de adelante para atrás como viceversa) o no. La función recibe como parámetro la cadena
+ y retorna 1 o 0 según sea la respuesta.
+*/
+
+
+int main()
+{
+    char palabra[100];
+    printf("Ingrese una palabra para saber si es palindromo");
+
+    gets(palabra);
+
+    int longitud = strlen(palabra);
+
+
+    int palindromo = buscarPalindromo(palabra, longitud);
+
+    mostrarResultado(palindromo);
+
+    return 0;
+}
+
+
+
+int buscarPalindromo(char palabra[], int longitud)
+{
+
+
+    int i = 0;
+    int k = longitud - 1;
+
+    while (i < k)
+    {
+
+        if (palabra[i] != palabra[k])
+        {
+            return 0;
+        }
+        i++;
+        k--;
+
+    }
+
+
+    return 1;
+}
+
+
+void mostrarResultado(int palindromo)
+{
+
+    if (palindromo == 1)
+    {
+
+        printf("Es palindromo");
+    }
+    else
+    {
+
+        printf("no es palindromo");
+    }
+
+
+
+}
