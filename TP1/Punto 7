@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+/*
+7. Hacer una función que intercambie el contenido de dos variables. (pasaje de parámetros por referencia)
+*/
+
+
+int main()
+{
+
+int a = 10;
+int b = 20;
+
+
+printf("A- %i \n", a);
+printf("B- %i \n", b);
+intercambiarVariables(&a, &b);
+
+printf("A- %i \n", a);
+printf("B- %i \n", b);
+    return 0;
+}
+
+
+void intercambiarVariables(int*a, int*b){
+
+int c;
+
+c = *a;
+*a = *b;
+*b = c;
+
+}
