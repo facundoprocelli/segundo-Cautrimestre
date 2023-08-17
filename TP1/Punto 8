@@ -1,0 +1,86 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+
+/*
+8. Dados dos arreglos de números enteros ordenados de menor a mayor, hacer una función que los reciba como parámetros
+y retorne un tercer arreglo que contenga los datos de los arreglos anteriores, también ordenados. Se los debe intercalar.
+*/
+
+
+int main()
+{
+    int dimencionC = 8;
+    int arregloA[] = {1,4,7,9};
+    int arregloB[] = {2,3,5,8};
+    int arregloC[dimencionC];
+
+
+    juntarArreglos(arregloA, arregloB,arregloC, dimencionC);
+
+    mostrarArreglo(arregloC, dimencionC);
+    return 0;
+}
+
+
+void juntarArreglos(int arregloA[], int arregloB[], int arregloC[], int dimensionC){
+
+int posA = 0;
+int posB = 0;
+int posC = 0;
+
+int menorA;
+int menorB;
+
+for (posC = 0; posC < dimensionC; posC++){
+
+    menorA = buscarMenor(arregloA, 4);
+    menorB = buscarMenor(arregloB, 4);
+
+
+    if (menorA <= menorB){
+
+        arregloC[posC] = arregloA[posA];
+        posA++;
+    }
+
+    else if  {
+        arregloC[posC] = arregloB[posB];
+        posB++;
+    }
+
+}
+
+}
+
+int buscarMenor(int arreglo[], int dimension) {
+    int posMenor = 0;
+
+    for (int i = 1; i < dimension; i++) {
+        if (arreglo[i] < arreglo[posMenor]) {
+            posMenor = i;
+        }
+    }
+
+    return posMenor;
+}
+
+
+
+void mostrarArreglo(int arreglo[], int validos){
+
+
+int i = 0;
+
+for (i = 0; i< validos; i++){
+
+    printf("%i \n", arreglo[i]);
+}
+
+
+
+}
