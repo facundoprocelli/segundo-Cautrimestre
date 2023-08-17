@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+/*
+1. Se tiene un arreglo de números enteros positivos. Se desea obtener el promedio de sus valores. Para ello se debe:
+a. Hacer una función que inicialice las celdas del arreglo en –1.
+b. Hacer una función que permita al usuario ingresar los valores. No se conoce la cantidad de antemano.
+c. Hacer una función que sume el contenido del arreglo y lo retorne.
+d. Hacer una función que cuente la cantidad de valores ingresados.
+e. Hacer una función que reciba como parámetro el arreglo ya cargado, calcule y retorne el valor promedio
+usando las funciones anteriores (c y d).
+f. Hacer la función main correspondiente.
+
+*/
+void inicilizarArreglo(int arreglo[], int dimension);
+void mostrarArreglo(int arreglo[], int validos);
+int cargarArreglo(int arreglo[], int dimension);
+int sumarContenido (int arreglo[], int validos);
+float  valorPromedio( int arreglo[], int validos);
+
+
+int main()
+{
+    int dimension = 100;
+    int arreglo[dimension];
+
+
+    inicilizarArreglo(arreglo, dimension);
+
+
+    int validos = cargarArreglo(arreglo, dimension);
+
+    mostrarArreglo(arreglo, validos);
+
+   float promedio = valorPromedio(arreglo, validos);
+
+    printf("\n%f \n", promedio);
+
+    return 0;
+}
+
+
+void inicilizarArreglo(int arreglo[], int dimension)
+{
+
+    for (int i = 0; i < dimension; i++)
+    {
+
+        arreglo[i] = -1;
+    }
+
+}
+
+void mostrarArreglo(int arreglo[], int validos)
+{
+
+    int i = 0;
+
+    for ( i = 0; i < validos; i++)
+    {
+
+        printf("  %i  \n", arreglo[i]);
+    }
+
+}
+
+
+int cargarArreglo(int arreglo[], int dimension)
+{
+
+    int i = 0;
+    int opcion = 0;
+    int numero;
+
+    printf("Dese agregar un numero al arreglo? \n 1 = si  2 = no\n");
+    fflush(stdin);
+    scanf( "%i", &opcion);
+
+        while ( opcion == 1 && i <= dimension)
+        {
+
+            printf("Ingrese el nuevo numero \n");
+            scanf("%i", &numero);
+
+            arreglo[i] = numero;
+            i++;
+
+            printf("Presione 1 para seguir\n Presione 2 Para Salir");
+            fflush(stdin);
+            scanf("%i", &opcion);
+
+        }
+
+    return i;
+}
+
+
+int sumarContenido (int arreglo[], int validos)
+{
+
+int resultado = 0;
+int i = 0;
+
+while (i < validos){
+
+    resultado = resultado + arreglo[i];
+    i++;
+}
+return resultado;
+
+}
+
+
+
+float  valorPromedio( int arreglo[], int validos){
+
+    float promedio = 0;
+    float total = sumarContenido(arreglo, validos);
+
+    promedio = (float)total / (float)validos;
+
+    return promedio;
+}
+
