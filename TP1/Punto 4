@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+/*
+4. Hacer una función que retorne la posición del valor máximo de un arreglo de números enteros.
+*/
+
+
+int main()
+{
+
+    int arreglo[] = {3,2,8,9,5,7,8};
+
+    int validos = sizeof(arreglo) / sizeof(arreglo[0]);
+
+
+
+    int posMayor = buscarMayor(arreglo, validos);
+
+    printf("%i", posMayor);
+
+
+
+
+    return 0;
+}
+
+int buscarMayor(int arreglo[], int validos)
+{
+
+
+    int i = 0;
+    int posMayor = i;
+    int numMayor = arreglo[posMayor];
+
+
+    for ( i = 0 ; i < validos; i++)
+    {
+
+        if ( numMayor < arreglo[i])
+        {
+
+            printf( "%i ", posMayor);
+            numMayor = arreglo[i ];
+            posMayor = i;
+
+            printf( "%i \n", posMayor);
+        }
+    }
+
+
+    return posMayor;
+}
