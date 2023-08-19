@@ -1,0 +1,419 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define archivoTareas "tareas.bin"
+
+#define maxCaracteresDescripcion 200
+#define maxCaracteres 30
+#define cantEstados 4
+
+#define minDia 1
+#define maxDia 31
+#define maxMes 12
+#define minAno 2023
+#define maxAno 2030
+
+
+
+
+//Estructura de tareas
+
+typedef struct
+{
+    int dia;
+    int mes;
+    int ano;
+} stFecha;
+
+typedef struct
+{
+    char titulo[maxCaracteres];
+    char descripcion[maxCaracteresDescripcion];
+    stFecha fecha;
+    char estado[maxCaracteres];
+} stTarea;
+
+
+
+//Cabecera
+int validacionString(char string[maxCaracteres]);
+int validacionNumeros(char str[100], int min, int max);
+
+
+//Mostrar datos
+void mostrarArchivoTarea();
+void mostrarTareaPorAtributo();
+
+// Funcion main
+int main()
+{
+
+    stTarea tarea;
+    stFecha fecha;
+
+    cargarNuevaTarea(&tarea, &fecha);
+
+    mostrarArchivoTarea();
+    mostrarTareaPorAtributo();
+
+
+    return 0;
+}
+
+void cargarNuevaTarea(stTarea *tarea, stFecha *fecha)
+{
+
+
+    FILE *archi = fopen(archivoTareas, "ab");
+
+    cargarTitulo(tarea);
+    cargarDescripcion(tarea);
+
+
+
+    cargarFechaDia(tarea, fecha);
+
+    cargarFechaMes(tarea, fecha);
+
+    cargarFechaAno(tarea, fecha);
+
+
+    cargarEstado(tarea);
+    mostrarTarea(tarea);
+
+    fwrite(tarea, sizeof(stTarea), 1, archi);
+
+    fclose(archi);
+}
+
+
+void cargarTitulo(stTarea* tarea)
+{
+    char titulo[maxCaracteres];
+    printf("\nTitulo: ");
+
+    fflush(stdin);
+    gets(titulo);
+
+    int valido = validacionString(titulo);
+
+    if(valido == 0)
+    {
+        while (valido == 0)
+        {
+            printf("Ingrese un titulo valido\nTitulo: ");
+            fflush(stdin);
+            gets(titulo);
+
+            valido = validacionString(titulo);
+        }
+    }
+    strcpy(tarea->titulo, titulo);
+}
+
+
+void cargarDescripcion (stTarea* tarea)
+{
+    printf("\nDescripcion: ");
+    fflush(stdin);
+    gets(tarea->descripcion);
+
+
+}
+
+
+
+
+void tiposEstado(char estado[cantEstados][maxCaracteres])
+{
+    printf("\n");
+    strcpy(estado[0], "Nueva");
+    strcpy(estado[1], "Lista");
+    strcpy(estado[2], "Terminada");
+    strcpy(estado[3], "Abandonda");
+}
+
+void mostrarEstados(char estado[][maxCaracteres])
+{
+
+    for(int i = 0; i < 4; i++)
+    {
+        printf("\n|%i| %s",i + 1, estado[i]);
+    }
+
+}
+
+
+void  cargarEstado(stTarea* tarea)
+{
+
+    int operador = -1;
+    char strOpcion[maxCaracteres];
+
+    char estado[cantEstados][maxCaracteres];
+    tiposEstado(estado);
+
+
+    printf("Seleccione un numero asociado a un estado: ");
+    mostrarEstados(estado);
+    printf("\nEstado: ");
+
+    fflush(stdin);
+    gets(strOpcion);
+
+
+    while(operador < 0)
+    {
+        operador = validacionNumeros(strOpcion,1,cantEstados);
+
+        if (operador >= 1 && operador <= cantEstados)
+        {
+            strcpy(tarea->estado,estado[operador - 1]);
+            break;
+        }
+    }
+
+
+}
+
+
+void mostrarTarea(stTarea* tarea)
+{
+
+
+    printf(".............................\n");
+    printf("Fecha: %i / %i / %i \n", tarea->fecha.dia, tarea->fecha.mes, tarea->fecha.ano);
+    printf("Titulo: %s\n", tarea->titulo);
+    printf("Estado: %s\n", tarea->estado);
+    printf("Descripcion: %s\n", tarea->descripcion);
+    printf(".............................\n");
+
+}
+
+
+
+void mostrarArchivoTarea()
+{
+
+    FILE *archi;
+    stTarea tarea;
+
+    fopen(archivoTareas, "rb");
+
+    while (fread(&tarea, sizeof(stTarea),1, archi) > 0)
+    {
+
+        mostrarTarea(&tarea);
+    }
+
+    fclose(archi);
+
+
+
+
+}
+
+
+void mostrarTareaPorAtributo(){
+
+int opcion = -1;
+
+while (opcion <1 || opcion > 4) {
+printf("Ingrese un numero asociado a un parametro");
+mostrarParametrosBusqueda();
+fflush(stdin);
+scanf("%i", &opcion);
+}
+
+
+switch(opcion){
+case 1:
+    mostrarTareaDia();
+    break;
+
+case 2:
+   // mostrarTareaMes();
+    break;
+
+case 3:
+    //mostrarTareaAno();
+    break;
+case 4:
+    //mostrarTareaTitulo();
+    break;
+
+}
+}
+
+
+void mostrarTareaDia(){
+
+FILE *archi = fopen(archivoTareas, "rb");
+stTarea tarea;
+stFecha fecha;
+stTarea tareaAux;
+int i= 0;
+
+cargarFechaDia(&tareaAux, &fecha);
+
+while (fread(&tarea, sizeof(stTarea), 1, archi) > 0){
+
+
+    if (tareaAux.fecha.dia == tarea.fecha.dia){
+
+        mostrarTarea(&tarea);
+        i++;
+    }
+}
+if (i == 0){
+        printf("No hay ninguna tarea asignada ese dia");
+}
+
+fclose(archi);
+}
+
+
+
+
+void mostrarParametrosBusqueda(){
+
+printf("\n|1| Dia");
+printf("\n|2| Mes");
+printf("\n|3| Ano");
+printf("\n|4| Titulo");
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+void cargarFechaDia(stTarea* tarea, stFecha* fecha)
+{
+    int operador = -1;
+    char strOpcion[maxCaracteres];
+    printf("\nDia: ");
+    fflush(stdin);
+    gets(strOpcion);
+
+    while(operador < 0)
+    {
+        operador = validacionNumeros(strOpcion,minDia,maxDia);
+
+        if (operador >= minDia && operador <= maxDia)
+        {
+            tarea->fecha.dia = operador;
+            break;
+        }
+    }
+
+}
+
+void cargarFechaMes(stTarea* tarea, stFecha* fecha)
+{
+    int operador = -1;
+    char strOpcion[maxCaracteres];
+    printf("\nMes: ");
+    fflush(stdin);
+    gets(strOpcion);
+
+    while(operador < 0)
+    {
+        operador = validacionNumeros(strOpcion,minDia,maxMes);
+
+        if (operador >= minDia && operador <= maxMes)
+        {
+            tarea->fecha.mes = operador;
+            break;
+        }
+    }
+
+}
+
+void cargarFechaAno(stTarea* tarea, stFecha* fecha)
+{
+    int operador = -1;
+    char strOpcion[maxCaracteres];
+    printf("\nAno: ");
+    fflush(stdin);
+    gets(strOpcion);
+
+    while(operador < 0)
+    {
+        operador = validacionNumeros(strOpcion,minAno,maxAno);
+
+        if (operador >= minAno && operador <= maxAno)
+        {
+            tarea->fecha.ano = operador;
+            break;
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+int validacionNumeros(char str[100], int min, int max)
+{
+    char *endptr;
+    long num = strtol(str, &endptr, 10);
+    int valido =0;
+    int conv;
+
+    conv = (int)num;
+    if (*endptr == '\0' && conv >= min && conv <= max )
+    {
+        valido = 1;
+    }
+    else
+    {
+        while (valido == 0)
+        {
+            printf("Ingrese un numero valido\n NUMERO:");
+            gets(str);
+            num = strtol(str, &endptr, 10);
+            conv = (int)num;
+            if (*endptr == '\0' && conv >= min && conv <= max)
+            {
+                valido = 1;
+
+            }
+        }
+    }
+    conv = (int)num;
+    return conv;
+}
+
+
+//Validacion de string
+int validacionString(char string[maxCaracteres])
+{
+
+    int cantidadCaracteres = strlen(string);
+    int i;
+    for (i = 0; i < cantidadCaracteres; i++)
+    {
+        char caracter = string[i];
+        if (isalpha(caracter) == 0)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
