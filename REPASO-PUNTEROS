@@ -1,0 +1,369 @@
+-
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define dimencion 10
+
+
+
+
+
+
+
+int main()
+{
+
+
+
+
+    return 0;
+
+
+}
+
+
+//PUNTO 1
+/*
+int *punt; // Almacena direc de memoria
+int x=7; // x = 7
+int y=5;// Y = 5
+punt=&x; // el contenido de punt es la direc de memoria de x
+*punt=4;// El vlor que se encuentre en donde almacena puntero es 4;
+printf(�%d, %d�,x,y); // �qu� imprime este printf?
+//Imprime 4,5
+*/
+
+//PUNTO 2
+
+/* int *punt; // punt lmacena direc de memoria
+int x=7; // x = 7
+int y=5;// y = 5
+punt=&x; // Punt almacena la direc de memoria de x
+x=4; //redefine x a 4
+printf(�%d, %d�,*punt,y); // �qu� imprime este printf?
+//Imprime 4 y 5
+*/
+
+//PUNTO 3
+
+/*
+int *punt; // punt alamcena direc de memoria
+int x=7; // x = 7
+int y=5;// y = 5
+punt=&x;// punt almacena la direc de x
+x=4; //redefino x a 4
+punt=&y; //redefino punt a la direc de memoria de y
+printf(�%d, %d�,*punt,x); // �qu� imprime este printf?
+//Imprime 5 y 4
+*/
+
+//PUNTO 4
+
+/*int *punt; // punt almacena direc de memoria
+int x=7;// x = 7
+int y=5; //y = 5
+punt=&x; // punt almacena direc de memoria de x
+*punt=3;// lo que este en la direc es 3- x = 3
+punt=&y; //redefine punt a la direc de memoria de y
+*punt=x; // el valor de y (Que esta en la direc de memoria), ahora es 3
+x=9; //redefino x a 9
+printf(�%d, %d�,*punt,x); // �qu� imprime este printf?
+//Imprime 3 y 9
+*/
+
+//PUNTO 5
+/*
+ int *punta, *puntb; //DEfino dos punteros
+int x=7; // x = 7
+int y=5;// y = 5
+punta=&x; //punta = direc memoria x
+*punta=3;// el valor de x cambia a 3
+puntb=&y; // puntb = direc memoria y
+*puntb=x; // el valor de y pasa a 3
+x=9; //redefino x a 9
+printf(�%d, %d�,*puntb,x); // �qu� imprime este printf?
+//Se imprime 3 y 9
+*/
+
+//PUNTO 6
+
+/*
+ int *punta, *puntb; //Defino dos punteros
+int x=7; // x = 7
+int y=5;// y = 5
+punta=&x; // punta = direc memoria x
+*punta=3; // x = 3
+puntb=&y; //puntb = direc memoria y
+*puntb=x; //puntb = 3
+x=9; // x = 9;
+printf(�%d, %d�,*puntb, *punta); // �qu� imprime?
+
+// Imprime 3 - 9
+*/
+
+// PUNTO 7
+
+/*
+int *punta, *puntb; //Defino dos punteros
+int x=7; // x = 7
+int y=5; //y = 5
+punta=&x; // punta = direc memoria x
+*punta=3; //x = 3
+puntb=&y; //puntb = direc memoria y
+*puntb=x; // y = 3
+x=9; // Redefino x= 9
+puntb=punta; // La direc de puntb = a punta
+printf(�%d, %d�,*puntb, y); // �qu� imprime?
+//imprime 9 y 3
+*/
+
+
+//PUNTO 8
+
+/*int *punt,i;  // defino puntero e i
+int x[5]={1,2,3,4,5};//defino un arreglo de 5 elementos
+punt=x; // El puntero apunta a un arreglo, que es un puntero de por si
+// Accede al primer elmento del arreglo porue no esta especificado
+*punt=9; // Se modifica el primer elemento del arreglo  9
+for(i=0;i<5;i++)
+printf(�%d�,x[i]); // �qu� imprime?
+
+//9-2-3-4-5
+
+*/
+
+//PUNTO 9
+
+/*
+
+    int *punt,i; //Defino un puntero e i
+int x[5]={1,2,3,4,5};//defino arreglo de 5 elementos
+punt=&x[0]; // El puntero apunta a la direccion de memoria del pirmere elemento 1
+*punt=9; // El valor 1 se modifica por 9
+punt[3]=7; //La posicion 3 se modifica por 7
+for(i=0;i<5;i++)
+printf(�%d,�,x[i]); // �qu� imprime?
+//9-2-3-7-5
+
+*/
+
+
+//PUNTO 10
+
+/*
+
+int *punt,i; //defino puntero e i
+int x[5]={1,2,3,4,5};//defino arreglo de 5 elementos
+punt=x; // puntero almacena la direc de memoria de x
+*x=11; // El primer elemento del puntero es 11  11-2-3-4-5
+*(punt+3)=9 ; // El 4 elemento  = 9
+for(i=0;i<5;i++)
+printf(�%d,�,x[i]); // �qu� imprime?
+
+//11-2-3-9-5
+*/
+
+
+//PUNTO 11
+
+/*
+
+
+int *punt,i; // Defino punt e i
+int x[5]={1,2,3,4,5};// Arreglo de 5 elementos
+punt=x; // punt se dirige al arreglo x[0]
+*(punt+2)=9; // x[2]  La tercer posicion del arreglo es 9 / 1-2-9-4-5
+*(x+3)=7 ;// x[3]   La posicion 3 =  7 / 1-2-9-7-5
+punt[1]=11 ; // La posicion 1 = 11 / 1-11-9-7-5
+for(i=0;i<5;i++)
+printf(�%d,�,*(punt+i)); // �qu� imprime?
+
+//1-11-9-7-5
+
+*/
+
+
+// PUNTO 12
+/*
+int *punt,i; // defino puntero e i
+int x[5]={1,2,3,4,5};// arrgelo de 5 elementos
+punt=x+4; // Puntero se posciona en la 4 posicion = 5
+*(punt-2)=9;//   OSea pos 2 = 9  // 1-2-9-4-5
+punt--; // Bajo una posicion en el puntero x[3]
+*(punt)=7 ; // Posicion 1 ahora es 7 / 1-2-9-7-5
+punt[1]=11 ; // posicion 1 ahora es 11 / 1-2-9-7-11
+for(i=0;i<5;i++)
+printf(�%d,�,*(x+i)); // �qu� imprime?
+// 1 2 9 7 11
+
+*/
+
+
+//PUNTO 13
+
+/*
+int *punt,i; //defino punt e i
+int x[5]={1,2,3,4,5};// arreglo de 5 elementos
+punt=&x[0]+3;  // puntero apunta a x[3] vale 4
+*(punt-2)=9; // x[1] ==  9  1-9-3-4-5
+punt--; //decrezco el puntero a x[2]
+*(punt)=7 ; // x[2] == 7 / 1-9-7-4-5
+punt[1]=11 ; // x[3] == 11 / 1-9-7-11-5
+punt=x;
+for(i=0;i<5;i++)
+printf(�%d,�,punt[i])); // �qu� imprime?
+//1-9-7-11-5
+*/
+
+// PUNTO 14
+
+/*
+
+void main(void){
+int x,y,z; //declaro x y z
+x=3; // x toma valor 3
+y=10; // y toma valor 10
+z=15; // z toma valor 15
+suma_dos (&x, &y, &z); // Se llama a la funcion y se pasa la dire de memoria de x y z como parametros
+printf(�%d %d %d�,x, y, z);// qu� imprimir�??
+}
+
+void suma_dos(int *x, int *y, int *z)
+{
+*x=*x+2; // lo que esta en x = a lo que esta en x + 2 osea 5
+*y=*y+2;// lo que esta en y = a lo que esta en y + 2 osea 12
+*z=*z+2;// lo que esta en z = a lo que esta en z + 2 osea 17
+}
+
+//IMPRIME  5-12-17
+
+*/
+
+
+// PUNTO 15
+
+/*
+
+    void main(void){
+int x=9; // Se declara x y se le da valor 9
+float y=44.6; // se declara y con valor 44.6
+char c=�a�; // se declara c con valor 'a'
+datos (&x, &y, &c); // Se envia la direccion de memoria de los datos
+printf(�%d %f %c�,x, y, c);// qu� imprimir�??
+}
+
+void datos(int *x, float *y, char *c)
+{
+*x=8;// Se cambia el valor de x por 8
+*y=4.2; // se cambia el valor de y por 4.2
+*c=�g�; // Se cmabia el vlaor de c por g
+}
+
+//IMPRIME 8-4.2-g
+
+*/
+
+// PUNTO 16
+
+/*
+
+   void main(void){
+int x=9; // Se declara x con valor 9
+float y=44.6; // se declara y con valor
+char c=�a�; // define c como a
+datos (&x, &y, &c); //se llama a la funcion con los parametros
+printf(�%d %d %f %c�,x, y, c);// qu� imprimir�??
+
+//imrpime 8, 4.2, g
+}
+
+    void datos(int *x, float *y, char *c)
+{
+printf(�%d %f %c�,x, y, c); // Intenta imprimir la direccion de memoria de los punteros
+*x=8;
+*y=4.2;
+*c=�g�;
+}
+
+*/
+
+// PUNTO 17
+
+/*
+
+
+ void main(void){
+int x=9; // declaro x como 9
+float y=44.6; // declaro y como 44.6
+char c=�a�; //decalro c como a
+datos (x, y, c); // envio los datos a la funcion
+printf(�%d %d %f %c�,x, y, c);// qu� imprimir�??
+//Imprime 9 - 44.6 y a
+}
+
+ void datos(int x, float y, char c)
+{
+printf(�%d %f %c�,x, y, c); // Imprime 9 - 44.6 y a
+x=8;
+y=4.2;
+c=�g�;
+}
+
+*/
+
+
+// PUNTO 18
+
+/*
+ void main(void){
+int x=9; // defino x = 9
+float y=44.6; //defino y = 44.6
+char c=�a�; // defino c = a
+x=datos (x, y, c); // El valor de x va a ser el retorno de la funcion
+// Cambia el valor de x por el retorno a 8
+printf(�%d %d %f %c�,x, y, c);// qu� imprimir�??
+
+// 8 - 44.6 - a
+}
+
+
+ int datos(int x, float y, char c)
+{
+printf(�%d %f %c�,x, y, c);  // imprime 9 44.6 a
+x=8;  //  se asignan nuevos valores de forma local
+y=4.2;
+c=�g�;
+return x; // se retorna el valor de x
+}
+*/
+
+
+// PUNTO 19
+
+/*
+
+ void main(void){
+int x=9; // se declara x = 9
+float y=44.6; // y = 44 . 6
+char c=�a�; // c = a
+c=datos (&x, &y, &c);  // se modifica el valor de c segun el retorno de la funcion,
+//se envia direc de memoria
+// El valor de c es 'h' , por el retorno de la funcion
+printf(�%d %d %f %c�,x, y, c);// qu� imprimir�??
+
+// imprime 8 - 4.2 - h
+}
+
+
+ char datos(int *x, float *y, char *c)
+{
+printf(�%d %f %c�,x, y, c); // No imprime nada porque son direc de memoria
+*x=8;  // cambia el valor de x a 8
+*y=4.2; // cambia el valor de y a 4.2
+*c=�g�; // cambia el valor de c a g
+return �h� ;  //retorna h
+}
+
+*/
