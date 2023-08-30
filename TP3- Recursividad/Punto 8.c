@@ -23,7 +23,7 @@ void cargarArchivo()
 {
     FILE *archi = fopen(archivoNais, "wb");
 
-    int valores[] = {5, 3, 1, 7, 5};
+    int valores[] = {5, 3, 6, 7, 1};
     int numValores = sizeof(valores) / sizeof(int);
 
     fwrite(valores, sizeof(int), numValores, archi);
@@ -53,7 +53,6 @@ int buscarMenorRegistro(FILE* archi)// recibe el archivo abierto
 
     if (fread(&i, sizeof(int), 1, archi) > 0) // se ejecuta simepre que no este en el final
     {
-        printf("\n bsuque el menor");
         menor = buscarMenorRegistro(archi); // el menor va a ser igual al proximo valor menor
 
 
@@ -64,7 +63,6 @@ int buscarMenorRegistro(FILE* archi)// recibe el archivo abierto
         //una vez que cae la funcion empeizan las comparaciones
         if (menor > i)
         {
-            printf("cambie el menor a %i", i);
             menor = i; // se intercambia el vlaor final
         }
 
@@ -89,6 +87,7 @@ int buscarMenorRegistro(FILE* archi)// recibe el archivo abierto
 
 // Esta funcion se crea unicamente para abrir el archivo
 //Porque si abrimos el archivo en la recursiva, se vana  abrir cientos de archivos
+// Ademas de que los archivos se abren en la posicion 1, por lo tanto no comparariamos datos
 
 void buscarMenorArchi()
 {
