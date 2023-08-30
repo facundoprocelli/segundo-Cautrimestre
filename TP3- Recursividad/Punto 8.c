@@ -7,6 +7,12 @@
 8. Buscar el menor elemento de un archivo de números enteros de forma recursiva. (desde el mismo archivo)
 */
 
+void buscarMenorArchi();
+void cargarArchivo();
+int buscarMenorRegistro(FILE* archi);
+void mostrarArchivo();
+
+
 int main()
 {
 
