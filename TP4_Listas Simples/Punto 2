@@ -3,7 +3,7 @@
 #include "Lib.h"
 
 #define archivoDatos "datos.bin"
-//Hacer un programa que lea de un archivo datos y los inserte en una lista.
+//Hacer un programa que lea de un archivo datos y los inserte en una lista de forma ordenada
 
 
 
