@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lib.h"
+
+#define archivoDatos "datos.bin"
+//Hacer un programa que lea de un archivo datos y los inserte en una lista.
+
+
+
+
+nodo * crearNodo( int dato);
+nodo* cargarListas(nodo* lista);
+
+int main()
+{
+    nodo* lista = inicLista();
+
+     cargarArchivo();
+
+   printf("MostrarArchivo \n");
+   mostrarArchivo();
+
+
+    lista = cargarListas(lista);
+    printf("Mostrar Lista \n");
+    mostrarLista(lista);
+
+
+    return 0;
+}
+
+
+nodo* cargarListas(nodo* lista){
+int i= 0;
+int dato;
+nodo * nuevo;
+
+FILE* archi = fopen(archivoDatos, "rb");
+
+
+while (fread(&dato, sizeof(int), 1, archi) > 0){
+
+    nuevo = crearNodo(dato);
+    lista = agregarOrdenado(lista,nuevo);
+
+}
+
+fclose(archi);
+
+return lista;
+}
+
+
+nodo * crearNodo( int dato)
+{
+    nodo * aux = (nodo*) malloc(sizeof(nodo));
+    aux->edad =  dato;
+    aux->siguiente=NULL;
+    return aux;
+}
+
+
+
+
+
+
+void cargarArchivo(){
+
+int dato;
+int i = 0;
+
+FILE * archi = fopen(archivoDatos, "wb");
+
+if (archi == NULL){
+
+    printf("No abre");
+}
+
+for ( i = 0; i < 5; i++){
+    printf("Ingrese el dato: ");
+    scanf("%i", &dato);
+    fwrite(&dato, sizeof(int), 1, archi);
+}
+fclose(archi);
+}
+
+
+void mostrarArchivo(){
+
+FILE* archi = fopen(archivoDatos, "rb");
+int dato;
+
+
+while (fread(&dato, sizeof(int), 1, archi) > 0) {
+    printf("%i\n", dato);
+}
+
+fclose(archi);
+}
+
+
+
+
+
+
+
