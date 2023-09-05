@@ -1,0 +1,139 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lib.h"
+
+#define archivoDatos "datos.bin"
+
+//Hacer una función que retorne un 1 (uno) o 0 (cero) si existe un determinado
+
+
+
+
+nodo * crearNodo( int dato);
+nodo* cargarListas(nodo* lista);
+int buscarNodo(nodo* lista, int dato);
+
+int main()
+{
+    nodo* lista = inicLista();
+    int dato;
+    cargarArchivo();
+
+
+    lista = cargarListas(lista);
+    printf("Mostrar Lista \n");
+    mostrarLista(lista);
+
+    printf("Ingrese Un dato para buscar: ");
+    scanf("%i", &dato);
+    int rta = buscarNodo(lista, dato);
+    printf("\n Respuesta: %i", rta);
+
+    return 0;
+}
+
+int buscarNodo(nodo* lista, int dato)
+{
+
+    int rta = 0;
+
+    nodo* seg = lista;
+
+    while (seg != NULL)
+    {
+
+        if (seg->edad == dato)
+        {
+            rta = 1;
+            break;
+        }
+
+        seg = seg->siguiente;
+    }
+    return rta;
+}
+
+
+
+nodo* cargarListas(nodo* lista)
+{
+
+    int dato;
+    nodo * nuevo;
+
+    FILE* archi = fopen(archivoDatos, "rb");
+
+
+    while (fread(&dato, sizeof(int), 1, archi) > 0)
+    {
+
+        nuevo = crearNodo(dato);
+        lista = agregarOrdenado(lista,nuevo);
+
+    }
+
+    fclose(archi);
+
+    return lista;
+}
+
+
+nodo * crearNodo( int dato)
+{
+    nodo * aux = (nodo*) malloc(sizeof(nodo));
+    aux->edad =  dato;
+    aux->siguiente=NULL;
+    return aux;
+}
+
+
+
+
+
+
+
+void cargarArchivo()
+{
+
+    int dato;
+    int i = 0;
+
+    FILE * archi = fopen(archivoDatos, "wb");
+
+    if (archi == NULL)
+    {
+
+        printf("No abre");
+    }
+
+    for ( i = 0; i < 5; i++)
+    {
+        printf("Ingrese el dato: ");
+        scanf("%i", &dato);
+        fwrite(&dato, sizeof(int), 1, archi);
+    }
+    fclose(archi);
+}
+
+
+void mostrarArchivo()
+{
+
+    FILE* archi = fopen(archivoDatos, "rb");
+    int dato;
+
+
+    while (fread(&dato, sizeof(int), 1, archi) > 0)
+    {
+        printf("%i\n", dato);
+    }
+
+    fclose(archi);
+}
+
+
+
+
+
+
+
