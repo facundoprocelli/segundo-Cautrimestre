@@ -1,0 +1,231 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lib.h"
+
+#define archivoDatos "datosA.bin"
+#define archivoDatosB "datosB.bin"
+
+/*
+4- Hacer una función que intercale en orden los elementos de dos listas
+ordenadas generando una nueva lista. Se deben redireccionar los punteros,
+ no se deben crear nuevos nodos.
+*/
+
+
+
+nodo * crearNodo( int dato);
+nodo* cargarListas(nodo* lista, FILE* archivo);
+int buscarNodo(nodo* lista, int dato);
+nodo* mezclarListas(nodo* listaA, nodo* listaB);
+
+int main()
+{
+    nodo* listaA = inicLista();
+    nodo* listaB = inicLista();
+    nodo* listaC = inicLista();
+
+    cargarArchivo(archivoDatos);
+    cargarArchivo(archivoDatosB);
+
+
+    listaA = cargarListas(listaA, archivoDatos);
+    listaB = cargarListas(listaB, archivoDatosB);
+
+
+    /*
+        printf("Mostrar Lista A \n");
+        mostrarLista(listaA);
+        printf("Mostrar Lista B \n");
+        mostrarLista(listaB);
+    */
+    listaC = mezclarListas(listaA, listaB);
+    printf("lista C\n");
+    mostrarLista(listaC);
+
+
+    return 0;
+}
+
+
+
+
+int buscarNodo(nodo* lista, int dato)
+{
+
+    int rta = 0;
+
+    nodo* seg = lista;
+
+    while (seg != NULL)
+    {
+
+        if (seg->edad == dato)
+        {
+            rta = 1;
+            break;
+        }
+
+        seg = seg->siguiente;
+    }
+    return rta;
+}
+
+
+
+
+nodo* mezclarListas(nodo* listaA, nodo* listaB)
+{
+
+    nodo* listaC = inicLista();
+    nodo* ultimoC = inicLista();
+
+
+    while (listaA != NULL || listaB != NULL)
+    {
+        //Mientras la lista A no este vacia o la lista B no este vacia se ejecuta
+
+        printf("\n La lista A o B no esta vacia\n");
+        if (listaA != NULL && (listaB == NULL || listaA->edad <= listaB->edad))
+
+        {
+
+
+
+            printf("\n La lista A no esta vacia y la B si, o el dato A es < a B\n");
+            // Si la lista A no esta vacia y LISTA B esta vacia o la edad de LSITA A es menor
+
+
+            if (ultimoC == NULL)
+            {
+                printf("\nPongo el primer dato de la fila C\n");
+                // Si listaC está vacía, establecemos el primer nodo
+                listaC = listaA;
+                ultimoC = listaA;
+
+            }
+            else
+            {
+                printf("\nAgrege el nodo de A a lista C\n");
+                // Agregamos el nodo de listaA a listaC y actualizamos el último nodo
+                ultimoC->siguiente = listaA;
+                // Hago que el nodo al que apunte lista ahora se almacenen en C
+                printf("\n Actualice el ultimo nodo\n");
+                ultimoC = listaA;
+            }
+
+            printf("\n Muevo lo lista A \n");
+            listaA = listaA->siguiente;
+            //Desligo a la lista, de el nodo que linkeamos a la lista C
+            //  Aca es cuando avanza el puntero de el nodo y hace que no se pierda la lista
+        }
+        else
+        {
+            if (ultimoC == NULL)
+            {
+                // Si listaC está vacía, establecemos el primer nodo
+                listaC = listaB;
+                ultimoC = listaB;
+                printf("\nPongo el primer dato de la fila C\n");
+            }
+            else
+            {
+                // Agregamos el nodo de listaB a listaC y actualizamos el último nodo
+                printf("\nAgrege el nodo de B a lista C\n");
+                ultimoC->siguiente = listaB;
+                printf("\n Actualice el ultimo nodo\n");
+                ultimoC = listaB;
+            }
+            printf("\n Muevo lo lista B \n");
+            listaB = listaB->siguiente;
+            //  Aca es cuando avanza el puntero de el nodo y hace que no se pierda la lista
+        }
+    }
+
+    return listaC;
+}
+
+
+
+
+nodo* cargarListas(nodo* lista, FILE* archivo)
+{
+
+    int dato;
+    nodo * nuevo;
+
+    FILE* archi = fopen(archivo, "rb");
+
+
+    while (fread(&dato, sizeof(int), 1, archi) > 0)
+    {
+
+        nuevo = crearNodo(dato);
+        lista = agregarOrdenado(lista,nuevo);
+
+    }
+
+    fclose(archi);
+
+    return lista;
+}
+
+
+nodo * crearNodo( int dato)
+{
+    nodo * aux = (nodo*) malloc(sizeof(nodo));
+    aux->edad =  dato;
+    aux->siguiente=NULL;
+    return aux;
+}
+
+
+
+
+
+
+
+void cargarArchivo(FILE * archivo)
+{
+
+    int dato;
+    int i = 0;
+
+    FILE * archi = fopen(archivo, "wb");
+
+    if (archi == NULL)
+    {
+
+        printf("No abre");
+    }
+
+    for ( i = 0; i < 5; i++)
+    {
+        printf("Ingrese el dato: ");
+        scanf("%i", &dato);
+        fwrite(&dato, sizeof(int), 1, archi);
+    }
+    fclose(archi);
+}
+
+
+void mostrarArchivo(FILE * archivo)
+{
+
+    FILE* archi = fopen(archivo, "rb");
+    int dato;
+
+
+    while (fread(&dato, sizeof(int), 1, archi) > 0)
+    {
+        printf("%i\n", dato);
+    }
+
+    fclose(archi);
+}
+
+
+
+
+
+
+
