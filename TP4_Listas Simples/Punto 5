@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lib.h"
+
+#define archivoDatos "datosA.bin"
+#define archivoDatosB "datosB.bin"
+
+/*
+4- Hacer una función que intercale en orden los elementos de dos listas
+ordenadas generando una nueva lista. Se deben redireccionar los punteros,
+ no se deben crear nuevos nodos.
+*/
+
+
+
+nodo * crearNodo( int dato);
+nodo* cargarLista(nodo* lista);
+int buscarNodo(nodo* lista, int dato);
+
+nodo* invertirLista(nodo* lista);
+
+int main()
+{
+    nodo* listaA = inicLista();
+    nodo* listaB = inicLista();
+
+    listaA = cargarLista(listaA);
+
+    mostrarLista(listaA);
+
+    listaB = invertirLista(listaA);
+
+    mostrarLista(listaB);
+
+
+    return 0;
+}
+
+
+nodo* invertirLista(nodo* lista)
+{
+
+    nodo* listaB = inicLista();
+
+    while (lista!= NULL)
+    {
+
+        nodo* sig = lista->siguiente;
+        lista->siguiente = listaB;
+        listaB = lista;
+        lista = sig;
+
+
+
+    }
+
+    return listaB;
+}
+
+
+
+
+nodo* cargarLista(nodo* lista)
+{
+
+    int dato;
+
+    nodo* nuevoNodo = inicLista();
+
+    for (int i = 0; i < 5; i++)
+    {
+
+        printf("\n Ingrese un dato: ");
+        scanf("%i", &dato);
+        nuevoNodo = crearNodo(dato);
+
+        lista = agregarPpio(lista, nuevoNodo);
+
+    }
+    return lista;
+}
+
+
+nodo * crearNodo( int dato)
+{
+    nodo * aux = (nodo*) malloc(sizeof(nodo));
+    aux->edad =  dato;
+    aux->siguiente=NULL;
+    return aux;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
