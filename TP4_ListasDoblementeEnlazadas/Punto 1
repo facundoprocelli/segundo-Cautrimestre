@@ -1,1 +1,111 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lib2.h"
+
+
+nodo2* cargarLista(nodo2* lista);
+int main()
+{
+    nodo2* lista = iniclista2();
+
+    lista = cargarLista(lista);
+
+    mostrarLista(lista);
+
+   lista =  borrarNodo(lista, 6);
+    printf("lista\n\n");
+    mostrarLista(lista);
+    return 0;
+}
+
+
+nodo2* cargarLista(nodo2* lista)
+{
+
+    int dato;
+
+    nodo2* nuevoNodo = iniclista2();
+
+    for (int i = 0; i < 5; i++)
+    {
+
+        printf("\n Ingrese un dato: ");
+        scanf("%i", &dato);
+        nuevoNodo = crearNodo(dato);
+
+        lista = agregarPpio2(lista, nuevoNodo);
+
+    }
+    return lista;
+}
+
+
+nodo2 * borrarNodo(nodo2* lista, int dato)
+{
+
+    if (lista!= NULL)   // si la lista no esta vacia
+    {
+        if (lista->dato == dato)   // si el primero coincide
+        {
+
+            nodo2 * aux = lista;  // el nodo aux es igual a lista
+            lista = lista->sig; // enlazo lista al proximo puntero
+
+            if (lista != NULL) // si lista no es NULL
+            {
+                lista->ante= NULL;  // Hago que ante sean NULL
+            }
+            free(aux); // borro aux
+        }
+
+        else
+        {
+
+            nodo2* seg = lista-> sig; // creo seg, para usarlo de auxiliar
+            nodo2* ante = lista; // crea ante, para ser un valor anterior al seguidor
+
+            while ((seg != NULL) && (seg->dato != dato)) // mientras seg no este vacio y el dato sea difrente al dato
+            {
+
+                ante = seg; // avanzo ante
+                seg = seg-> sig; // avanzo seg
+
+            }
+
+            if (seg!= NULL)
+            {
+
+                ante->sig = seg-> sig;  // Enlazo ante a la proxima posicion de seguidor
+
+                free(seg); // Limpio seguidor
+            }
+        }
+
+    }
+
+    return lista; // retorno lista
+}
+
+
+
+
+
+
+/*
+
+Tarea:
+
+1- Crear LIB nodo 2 - INIC
+                    - CREAR
+                    - 3x Agreagar
+                    - Mostrar Lista + Mostrar Nodo
+                    - Buscar Ultimo
+2- Mostrar Inverso
+
+
+3- Borrar Nodo      - C y P Borrar nodo
+                    - Probarlo
+                    - AJustarlo a lo necesario
+
+*/
 
