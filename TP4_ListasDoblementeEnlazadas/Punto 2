@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lib2.h"
+
+
+
+/*Crear una función recursiva que determine si una lista doblemente vinculada es capicúa.
+ (Después de ver recursividad - si no, hacer iterativo, NO usar contador)
+*/
+
+nodo2* cargarLista(nodo2* lista);
+int main()
+{
+    nodo2* lista = iniclista2();
+
+    lista = cargarLista(lista);
+
+    mostrarLista(lista);
+
+    nodo2* ultimo = buscarUltimo(lista);
+
+    capicuaRecursivo(lista, ultimo );
+
+    return 0;
+}
+
+
+nodo2* cargarLista(nodo2* lista)
+{
+
+    int dato;
+
+    nodo2* nuevoNodo = iniclista2();
+
+    for (int i = 0; i < 5; i++)
+    {
+
+        printf("\n Ingrese un dato: ");
+        scanf("%i", &dato);
+        nuevoNodo = crearNodo(dato);
+
+        lista = agregarPpio2(lista, nuevoNodo);
+
+    }
+    return lista;
+}
+
+
+void capicuaRecursivo(nodo2* seg, nodo2* ultimo)
+{
+
+
+    if ( seg != NULL) // Si es null no se ejecuta la lista
+    {
+
+        if(seg == ultimo)  // Si la direccion de memoria de ultimo y seg, son iguales, quiere decir que es capicua
+        {
+
+            printf("Es capicua");
+
+        }
+
+        else if (seg->dato != ultimo->dato) // Si el dato de una no coincide con el otro, no es capicua
+        {
+            printf("no es capicua");
+
+        }
+
+        else
+        {
+
+            capicuaRecursivo(seg->sig, ultimo->ante); // Llamado recursivo
+            // Acercameinto al corte
+        }
+
+
+
+    }
+
+    else   // Si Seg es NULL, se corta el if de arriba, y eso quiere decir que es capicua
+    {
+
+        printf("Es capicua");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
