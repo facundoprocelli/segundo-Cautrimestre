@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lib2.h"
+
+
+
+/*
+Dada una lista doblemente enlazada ordenada de enteros,
+ eliminar el  nodo que se encuentra en el punto medio de la lista,
+  si la cantidad de nodos es par, eliminar el inmediatamente superior.
+*/
+
+nodo2* cargarLista(nodo2* lista);
+nodo2* eliminarMedio(nodo2* lista);
+int main()
+{
+    nodo2* lista = iniclista2();
+
+    lista = cargarLista(lista);
+
+    mostrarLista(lista);
+
+    lista = eliminarMedio(lista);
+    printf("\n");
+    mostrarLista(lista);
+
+    return 0;
+}
+
+
+nodo2* cargarLista(nodo2* lista)
+{
+
+    int dato;
+
+    nodo2* nuevoNodo = iniclista2();
+
+    for (int i = 0; i <8; i++)
+    {
+
+        printf("\n Ingrese un dato: ");
+        scanf("%i", &dato);
+        nuevoNodo = crearNodo(dato);
+
+        lista = agregarPpio2(lista, nuevoNodo);
+
+    }
+    return lista;
+}
+
+
+
+nodo2* eliminarMedio(nodo2* lista)
+{
+
+    nodo2* seg = lista; // Hago una copia de lista
+
+    if(seg != NULL) // Mientras no sea NULL
+    {
+
+
+        nodo2* ultimo = buscarUltimo(lista); // Asigno el ultimo nodo a ultimo
+
+
+        while ((seg != ultimo) && (seg->sig != ultimo)) // Mientras seg sea != a ultimo y seg->sig sea != a ultimo
+        {
+
+            seg = seg->sig; // avanzo seg
+            ultimo = ultimo->ante; // retorcedo ultimo
+
+        }
+
+        lista = borrarNodo(lista, ultimo->dato); // Llamo a la funcion borrar nodo
+    }
+
+
+    return lista; // retorno la lista
+}
+
+
+
+
+
+
+
+
+
+
+
+
