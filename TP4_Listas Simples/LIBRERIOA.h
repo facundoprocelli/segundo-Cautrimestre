@@ -58,6 +58,8 @@ nodo * buscarUltimo(nodo* lista);
 
 nodo * borrarNodo(nodo* lista, int dato);
 
+nodo* borrarNodoR(nodo* lista, int dato);
+
 //-------------------------------------------------------------------------
 
 #endif // LIB_H_INCLUDED
