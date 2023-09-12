@@ -130,7 +130,7 @@ void mostrarLista(nodo* lista)
 
     nodo* seg = lista; // trabajo con una copia para no moficar el original
 
-                while (seg!= NULL)  // Mientras no este en el final
+    while (seg!= NULL)  // Mientras no este en el final
     {
 
         mostrarNodo(seg); // llamo a la funcion mostrar nodo
@@ -156,10 +156,11 @@ void mostrarListaRecursiva(nodo* lista)
 
 
 
-void mostrarNodo(nodo * lista){
+void mostrarNodo(nodo * lista)
+{
 
 
-printf("%i\n", lista->edad);
+    printf("%i\n", lista->edad);
 
 
 }
@@ -196,7 +197,7 @@ nodo * borrarNodo(nodo* lista, int dato)
     if (lista!= NULL)   // si la lista no esta vacia
     {
 
-        if (lista -> edad = dato)   // si el primer coincide
+        if (lista -> edad == dato)   // si el primer coincide
         {
 
             nodo * aux = lista;  // el nodo aux es igual a lista
@@ -224,6 +225,57 @@ nodo * borrarNodo(nodo* lista, int dato)
         return lista; // retorno lista
     }
 }
+
+
+
+
+// Borrar nodo recursivamente
+
+
+nodo* borrarNodoR(nodo* lista, int valor)
+{
+
+    if (lista)
+    {
+
+        if(lista->edad == valor)
+        {
+            nodo* aux =lista;
+            lista = lista->siguiente;
+            free(aux);
+        }
+
+        else
+        {
+
+            lista->siguiente = borrarNodo(lista->siguiente, valor);
+        }
+    }
+
+    return lista;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
