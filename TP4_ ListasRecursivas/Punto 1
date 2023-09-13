@@ -11,17 +11,184 @@ Recorrer una lista y mostrarla de forma invertida
 
 nodo * crearNodo( int dato);
 nodo* cargarLista(nodo* lista);
+nodo* borrarNodoR(nodo* lista, int valor);
+nodo* agregarOrdenadoRecursiva(nodo* lista, nodo* nuevoNodo);
+nodo* cargarListaR(nodo* lista);
+nodo* invertirOrdenR(nodo*lista);
+
+
 
 int main()
 {
     nodo* listaA = inicLista();
-    nodo* listaB = inicLista();
 
     listaA = cargarLista(listaA);
+    printf("\n\n");
+
+invertirOrdenR(listaA);
 
     mostrarListaRecursiva(listaA);
+    //printf("\n\n");
 
+    //int rta= sumarNodoR(listaA);
+    //printf("\n\n RTA: %i", rta);
+
+    /*
+    printf("\n\n");
+    borrarNodoR(listaA, 3);
+    mostrarListaRecursiva(listaA);
+    printf("\n\n");
+    */
     return 0;
+}
+
+
+/*
+nodo* agregarOrdenadoRecursiva(nodo* lista, nodo* nuevoNodo){
+
+nodo* aux = lista->siguiente;
+printf("Estoy aca");
+
+if (lista == NULL){
+
+    lista = nuevoNodo;
+
+    printf("entre vacio");
+}
+
+ else if (aux->edad > nuevoNodo->edad){
+
+
+    lista->siguiente = nuevoNodo;
+    nuevoNodo->siguiente = aux;
+printf("Encontre un elemento");
+
+ }
+  else {
+        printf("llamo recursiva");
+     lista->siguiente = agregarOrdenadoRecursiva(lista->siguiente, nuevoNodo);
+
+ }
+
+
+return lista;
+}
+*/
+
+
+nodo* invertirOrdenR(nodo*lista){
+
+nodo* ultimo = inicLista();
+nodo* aux = inicLista();
+
+if ( lista->siguiente != NULL){
+
+    aux = lista;
+    lista = lista->siguiente;
+    ultimo = buscarUltimo(lista);
+    ultimo->siguiente = lista;
+
+}
+
+  lista = invertirOrdenR(lista->siguiente);
+
+  return lista;
+
+}
+
+
+
+
+
+
+nodo* agregarOrdenadoRecursiva(nodo* lista, nodo* nuevoNodo)
+{
+    nodo* aux = lista; // creao un aux para poder mantener la lista, y que no se pise
+
+    if (lista == NULL || lista->edad > nuevoNodo->edad)
+        // Si la lista sea NULL (ultimo elemento), o la edad sea menor
+    {
+        nuevoNodo->siguiente = lista;// agrego el nuevo nodo y lo enlazo a la lista
+        aux = nuevoNodo; // Me ubico en la nueva lista
+    }
+    else
+    {
+        lista->siguiente = agregarOrdenadoRecursiva(lista->siguiente, nuevoNodo); // Llamada recursiva
+                                                // Acercamiento al corte
+    }
+
+    return aux; // retorno la lista
+}
+
+// La lista va avanzando por lo tanto se agregan los elementos al principio porque
+// no la lista es el elemento siguiente
+
+
+
+
+
+
+
+nodo* borrarNodoR(nodo* lista, int valor)
+{
+
+    if (lista)
+    {
+
+        if(lista->edad == valor)
+        {
+            nodo* aux =lista;
+            lista = lista->siguiente;
+            free(aux);
+        }
+
+        else
+        {
+
+            lista->siguiente = borrarNodo(lista->siguiente, valor);
+        }
+    }
+
+    return lista;
+}
+
+
+
+
+
+void mostrarListaRecursivaPar(nodo* lista)
+{
+    if (lista != NULL) // Mientras no sea NULL
+    {
+        mostrarNodo(lista); // Muestro la lista
+
+        lista=lista->siguiente; // avanzo la lista
+        if(lista) // meintras no sea NULL
+            mostrarListaRecursivaPar(lista->siguiente); // Llamo recursiva con la pos siguiente de lista
+        // Esto hace que se avancen en total dos posiciones
+        // imprimiendo solo las posiciones par
+    }
+
+}
+
+
+
+
+int sumarNodoR(nodo*lista)
+{
+
+    int rta = 0;
+
+    if(lista!= NULL)
+    {
+        //Condicion de corte implicita
+        rta = lista->edad;
+        rta = rta +  sumarNodoR(lista->siguiente); //// Llamado recursivo
+        //Acercamiento al corte
+
+    }
+
+    return rta;
 }
 
 
@@ -52,14 +219,14 @@ nodo* cargarLista(nodo* lista)
 
     nodo* nuevoNodo = inicLista();
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i <5; i++)
     {
 
         printf("\n Ingrese un dato: ");
         scanf("%i", &dato);
         nuevoNodo = crearNodo(dato);
 
-        lista = agregarPpio(lista, nuevoNodo);
+        lista = agregarOrdenadoRecursiva(lista, nuevoNodo);
 
     }
     return lista;
@@ -73,3 +240,38 @@ nodo * crearNodo( int dato)
     aux->siguiente=NULL;
     return aux;
 }
+
+//------------------------------------------------------------------------
+//------------------------------------------------------------------------
+/*
+void inicpila(pila* p){
+
+p->lista = inicLista();
+}
+
+
+
+void apilar(pila* p, int dato){
+
+nodo* NN = crearNodo(dato);
+p->lista = agregarPpio(p->lista, NN);
+
+}
+
+
+
+void mostrarPila(pila*p){
+
+mostrarLista(p->lista)
+}
+*/
+
+
+
+
+
+
+
+
+
+
