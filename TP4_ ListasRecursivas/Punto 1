@@ -1,1 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lib.h"
 
+
+/*
+Recorrer una lista y mostrarla de forma invertida
+*/
+
+
+
+nodo * crearNodo( int dato);
+nodo* cargarLista(nodo* lista);
+
+int main()
+{
+    nodo* listaA = inicLista();
+    nodo* listaB = inicLista();
+
+    listaA = cargarLista(listaA);
+
+    mostrarListaRecursiva(listaA);
+
+    return 0;
+}
+
+
+
+void mostrarListaRecursiva(nodo* lista)
+{
+
+    if (lista == NULL)
+    {  }
+    else
+    {
+
+        mostrarListaRecursiva(lista->siguiente);
+        mostrarNodo(lista);
+    }
+
+}
+
+
+// Mostraruna lista de fomra recursiva
+
+
+
+nodo* cargarLista(nodo* lista)
+{
+
+    int dato;
+
+    nodo* nuevoNodo = inicLista();
+
+    for (int i = 0; i < 5; i++)
+    {
+
+        printf("\n Ingrese un dato: ");
+        scanf("%i", &dato);
+        nuevoNodo = crearNodo(dato);
+
+        lista = agregarPpio(lista, nuevoNodo);
+
+    }
+    return lista;
+}
+
+
+nodo * crearNodo( int dato)
+{
+    nodo * aux = (nodo*) malloc(sizeof(nodo));
+    aux->edad =  dato;
+    aux->siguiente=NULL;
+    return aux;
+}
