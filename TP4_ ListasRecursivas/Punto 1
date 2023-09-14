@@ -21,11 +21,12 @@ nodo* invertirOrdenR(nodo*lista);
 int main()
 {
     nodo* listaA = inicLista();
+    nodo* listaB = inicLista();
 
     listaA = cargarLista(listaA);
     printf("\n\n");
 
-invertirOrdenR(listaA);
+    listaA = invertirOrdenR(listaA);
 
     mostrarListaRecursiva(listaA);
     //printf("\n\n");
@@ -43,58 +44,29 @@ invertirOrdenR(listaA);
 }
 
 
-/*
-nodo* agregarOrdenadoRecursiva(nodo* lista, nodo* nuevoNodo){
-
-nodo* aux = lista->siguiente;
-printf("Estoy aca");
-
-if (lista == NULL){
-
-    lista = nuevoNodo;
-
-    printf("entre vacio");
-}
-
- else if (aux->edad > nuevoNodo->edad){
 
 
-    lista->siguiente = nuevoNodo;
-    nuevoNodo->siguiente = aux;
-printf("Encontre un elemento");
+nodo* invertirOrdenR(nodo*lista)
+{
 
- }
-  else {
-        printf("llamo recursiva");
-     lista->siguiente = agregarOrdenadoRecursiva(lista->siguiente, nuevoNodo);
-
- }
+    nodo* aux = inicLista();
 
 
-return lista;
-}
-*/
+    if (lista != NULL)
+    {
 
+        aux = lista;
+        lista = invertirOrdenR(lista->siguiente);
+        aux->siguiente = NULL;
 
-nodo* invertirOrdenR(nodo*lista){
+        lista = agregarFinal(lista, aux);
 
-nodo* ultimo = inicLista();
-nodo* aux = inicLista();
+    }
 
-if ( lista->siguiente != NULL){
-
-    aux = lista;
-    lista = lista->siguiente;
-    ultimo = buscarUltimo(lista);
-    ultimo->siguiente = lista;
+    return lista;
 
 }
 
-  lista = invertirOrdenR(lista->siguiente);
-
-  return lista;
-
-}
 
 
 
@@ -114,7 +86,7 @@ nodo* agregarOrdenadoRecursiva(nodo* lista, nodo* nuevoNodo)
     else
     {
         lista->siguiente = agregarOrdenadoRecursiva(lista->siguiente, nuevoNodo); // Llamada recursiva
-                                                // Acercamiento al corte
+        // Acercamiento al corte
     }
 
     return aux; // retorno la lista
@@ -200,9 +172,9 @@ void mostrarListaRecursiva(nodo* lista)
     {  }
     else
     {
-
-        mostrarListaRecursiva(lista->siguiente);
         mostrarNodo(lista);
+        mostrarListaRecursiva(lista->siguiente);
+
     }
 
 }
