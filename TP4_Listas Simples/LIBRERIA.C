@@ -35,6 +35,7 @@ nodo* inicLista()
 
 
 
+
 //agregar nodo al principio
 
 nodo* agregarPpio ( nodo* lista, nodo* nuevoNodo)
@@ -108,7 +109,6 @@ nodo * agregarFinal(nodo* lista, nodo* nuevoNodo)
 
     if (lista == NULL)   // si la lista esta vacia
     {
-
         lista = nuevoNodo; // El nuevo nodo, se convierte en la lista
     }
 
@@ -116,13 +116,13 @@ nodo * agregarFinal(nodo* lista, nodo* nuevoNodo)
     {
 
         nodo * ultimo = buscarUltimo(lista);  // llamamos a una funcion apra buscar al ultimo
-
         ultimo->siguiente = nuevoNodo; //la posicion siguiente del ultimo, es el nuevo elemento
     }
 
     return lista;// retornamos lista en caso de que s ehaya creado en el primer if
 
 }
+
 // Mostrar lista no recursiva
 
 void mostrarLista(nodo* lista)
@@ -138,21 +138,6 @@ void mostrarLista(nodo* lista)
     }
 }
 
-
-//Mostrar Lista de forma recursiva
-
-void mostrarListaRecursiva(nodo* lista)
-{
-
-    if (lista == NULL)
-    {  }
-    else
-    {
-        mostrarNodo(lista);
-        mostrarListaRecursiva(lista->siguiente);
-    }
-
-}
 
 
 
@@ -185,7 +170,7 @@ nodo * buscarUltimo(nodo* lista)
 
     }
 
-
+return seg;
 }
 
 
@@ -232,28 +217,6 @@ nodo * borrarNodo(nodo* lista, int dato)
 // Borrar nodo recursivamente
 
 
-nodo* borrarNodoR(nodo* lista, int valor)
-{
-
-    if (lista)
-    {
-
-        if(lista->edad == valor)
-        {
-            nodo* aux =lista;
-            lista = lista->siguiente;
-            free(aux);
-        }
-
-        else
-        {
-
-            lista->siguiente = borrarNodo(lista->siguiente, valor);
-        }
-    }
-
-    return lista;
-}
 
 
 
