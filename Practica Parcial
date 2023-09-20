@@ -1,0 +1,423 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "string.h"
+
+
+
+typedef struct
+{
+    int codigoProducto;
+    char marca[50]; // Nintendo Switch, Xbox, Playstation
+    float precioEnMiles;
+    int stock;
+    char modelo[50];// Común, Pro, Slim
+} stConsola ;
+
+
+typedef struct nodoConsola
+{
+    stConsola dato ;
+    struct nodoConsola * siguiente;
+} nodoConsola;
+
+
+typedef struct
+{
+
+    char Nombre[50];
+    int mediodepago; //1 efectivo, 2 patacones, 3 dolar     ahorro
+    float totalCompra;
+} stCliente ;
+
+typedef struct nodoCliente
+{
+    stCliente dato;
+    struct nodoCliente* siguiente;
+    struct nodoCliente* anterior;
+} nodoCliente;
+
+nodoConsola* inicLista();
+nodoConsola* crearNodo(nodoConsola* nodoP, int codigo, char marca[50], float Precio, int stock, char modelo[50]);
+void mostrarNodoCosola(nodoConsola* nodoP);
+void mostrarListaConsola(nodoConsola* nodoP);
+nodoConsola* agregarPorStock(nodoConsola* nodoP, nodoConsola* NN);
+void mostrarPrecioRecursivo(nodoConsola* nodoP, float precio);
+int controlarStock(nodoConsola* nodoP, char brand[50], char mod[50], int cantidad);
+
+
+
+
+
+nodoCliente* realizarVenta(nodoConsola* nodoP,nodoCliente* listaP, char nombre[50], int modoPago, int cantCompra);
+nodoCliente * inicLista2();
+nodoCliente* agregarFinal(nodoCliente* listaP, nodoCliente* NN);
+nodoCliente* buscarUltimo(nodoCliente* listaP);
+nodoCliente * crearNodo2(nodoCliente* listaP, char nombre[50], int modoPago, float precioFinal);
+void cambiarStock(nodoConsola * nodoP, int cantidad, char brand[50], char mod[50]);
+float contarVentasClientes(nodoCliente* listaP);
+
+
+
+
+
+int main()
+{
+
+    nodoConsola* lista = inicLista();
+
+    nodoCliente* lista2 = inicLista2();
+
+    nodoConsola* NN1 = inicLista();
+    nodoConsola* NN2 = inicLista();
+    nodoConsola* NN3 = inicLista();
+
+
+    NN1 = crearNodo(NN1, 222, "Xbox", 4000, 20, "pro");
+    NN2 = crearNodo(NN2, 333, "Nintendo", 2000, 50, "Switch");
+    NN3 = crearNodo(NN3, 444, "Sega", 1000, 3, "Genesis");
+
+    lista = crearNodo(lista, 111, "Sony", 5000.45, 30, "slim");
+
+    lista = agregarPorStock(lista, NN1);
+    lista = agregarPorStock(lista, NN2);
+    lista = agregarPorStock(lista, NN3);
+    //mostrarListaConsola(lista);
+
+    //mostrarPrecioRecursivo(lista, 5000.45);
+
+    mostrarListaConsola(lista);
+    lista2 = realizarVenta(lista, lista2, "Carlos", 1, 19);
+
+    mostrarNodoCliente(lista2);
+/*
+        mostrarListaClientes(lista2);
+    float totalVentas = contarVentasClientes(lista2);
+
+    printf("\ntotalVentas: %f \n", totalVentas);
+*/
+
+    return 0;
+}
+
+
+
+
+
+nodoConsola* inicLista()
+{
+    return NULL;
+}
+
+nodoConsola* crearNodo(nodoConsola* nodoP, int codigo, char brand[50], float precio, int cantidad, char mod[50])
+{
+
+    nodoConsola* aux = (nodoConsola*)malloc(sizeof(nodoConsola));
+    aux->dato.codigoProducto = codigo;
+
+
+    strcpy(aux->dato.marca, brand);
+    aux->dato.precioEnMiles = precio;
+    aux->dato.stock = cantidad;
+    strcpy(aux->dato.modelo,mod);
+    aux->siguiente = NULL;
+
+    return aux;
+}
+
+void mostrarNodoCosola(nodoConsola* nodoP)
+{
+
+    printf("\nCodigo: %i\n", nodoP->dato.codigoProducto);
+    printf("Marca:  %s\n", nodoP->dato.marca);
+    printf("Precio: %.2f\n", nodoP->dato.precioEnMiles);
+    printf("Stock:  %i\n", nodoP->dato.stock);
+    printf("Modelo: %s\n", nodoP->dato.modelo);
+
+}
+
+void mostrarListaConsola(nodoConsola* nodoP)
+{
+
+    nodoConsola* aux = nodoP;
+
+    while (aux != NULL)
+    {
+
+        mostrarNodoCosola(aux);
+        aux = aux->siguiente;
+    }
+
+}
+
+nodoConsola* agregarPorStock(nodoConsola* nodoP, nodoConsola* NN)
+{
+
+
+    if (nodoP == NULL)
+    {
+
+        nodoP = NN;
+    }
+    else
+    {
+
+        if (nodoP->dato.stock > NN->dato.stock)
+        {
+
+            NN ->siguiente = nodoP;
+            nodoP = NN;
+        }
+
+        else
+        {
+
+            nodoConsola* ante = nodoP;
+            nodoConsola* seg = nodoP->siguiente;
+
+
+            while ((seg!= NULL) && (seg->dato.stock < nodoP->dato.stock))
+            {
+
+                ante = seg;
+                seg = seg->siguiente;
+
+            }
+
+            NN ->siguiente = seg;
+            ante->siguiente = NN;
+
+        }
+
+    }
+
+
+    return nodoP;
+}
+
+
+void mostrarPrecioRecursivo(nodoConsola* nodoP, float precio)
+{
+
+
+
+    if (nodoP != NULL)
+    {
+
+
+        if(nodoP->dato.precioEnMiles == precio)
+        {
+
+            mostrarNodoCosola(nodoP);
+        }
+
+        mostrarPrecioRecursivo(nodoP->siguiente, precio);
+    }
+
+
+}
+
+
+int controlarStock(nodoConsola* nodoP, char brand[50], char mod[50], int cantidad)
+{
+
+    int flag = 0;
+
+    nodoConsola* aux = nodoP;
+
+    while (aux != NULL)
+    {
+
+
+        if ((strcmp(brand, aux->dato.marca) == 0) && (strcmp(mod, aux->dato.modelo) == 0) && (cantidad <= aux->dato.stock))
+        {
+
+
+            flag = 1;
+        }
+
+        aux = aux->siguiente;
+    }
+
+    return flag;
+}
+
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+nodoCliente * inicLista2()
+{
+
+    return NULL;
+}
+
+nodoCliente * crearNodo2(nodoCliente* listaP, char nombre[50], int modoPago, float precioFinal)
+{
+
+    nodoCliente * aux = (nodoCliente*)malloc(sizeof(nodoCliente));
+
+    strcpy(aux->dato.Nombre, nombre);
+    aux->dato.mediodepago = modoPago;
+    aux->dato.totalCompra = precioFinal;
+    aux->siguiente = NULL;
+    aux->anterior = NULL;
+
+
+    return aux;
+}
+
+
+nodoCliente* agregarFinal(nodoCliente* listaP, nodoCliente* NN)
+{
+
+    if (listaP == NULL)
+    {
+        listaP = NN;
+    }
+
+    else
+    {
+
+        nodoCliente* ultimo = buscarUltimo(listaP);
+
+        ultimo->siguiente = NN;
+        NN->anterior = ultimo;
+
+    }
+    return listaP;
+}
+
+
+nodoCliente* buscarUltimo(nodoCliente* listaP)
+{
+
+    nodoCliente* aux = listaP;
+
+    if(aux != NULL)
+    {
+
+        while(aux->siguiente != NULL)
+        {
+
+            aux = aux->siguiente;
+        }
+    }
+    return aux;
+}
+
+
+
+nodoCliente* realizarVenta(nodoConsola* nodoP,nodoCliente* listaP, char nombre[50], int modoPago, int cantCompra)
+{
+
+    nodoConsola* aux = nodoP;
+
+    char marca[50];
+    char modelo[50];
+
+    printf("ingrese EL nombre de la consola");
+    gets(marca);
+    printf("ingrese EL modelo de la consola");
+    gets(modelo);
+
+
+    int stock = controlarStock(aux, marca, modelo, cantCompra);
+
+
+    if ( stock == 0)
+    {
+
+        printf("No hay stock suficiente para realizar la venta");
+    }
+
+    else
+    {
+
+        int precioFinal = cantCompra * aux->dato.precioEnMiles;
+        nodoCliente* NN = crearNodo2(listaP,nombre, modoPago, precioFinal);
+        mostrarNodoCliente(NN);
+        agregarFinal(listaP, NN);
+
+        cambiarStock(nodoP, cantCompra, marca, modelo);
+
+    }
+
+
+    return listaP;
+}
+
+
+
+
+void cambiarStock(nodoConsola * nodoP, int cantidad, char brand[50], char mod[50])
+{
+
+
+    nodoConsola* aux = nodoP;
+
+
+    while (aux != NULL)
+    {
+
+
+        if ((strcmp(brand, aux->dato.marca) == 0) && (strcmp(mod, aux->dato.modelo) == 0))
+        {
+
+            int  total = aux->dato.stock;
+            aux->dato.stock = total - cantidad;
+
+        }
+
+        aux = aux->siguiente;
+    }
+
+}
+
+
+void mostrarNodoCliente(nodoCliente* listaP)
+{
+
+   printf("\nNombre: %s\n", listaP->dato.Nombre);
+   printf("Medio de Pago %i\n", listaP->dato.mediodepago);
+   printf("Total Compra %f\n", listaP->dato.totalCompra);
+
+}
+
+void mostrarListaClientes(nodoCliente* listaP)
+{
+
+    nodoCliente* aux = listaP;
+
+    while (aux != NULL)
+    {
+
+        mostrarNodoCliente(aux);
+        aux = aux->siguiente;
+    }
+
+}
+
+
+float contarVentasClientes(nodoCliente* listaP)
+{
+
+    float totalVentas = 0;
+
+    nodoCliente* aux = listaP;
+
+    while (aux != NULL)
+    {
+        printf("erf");
+
+        totalVentas = totalVentas + aux->dato.totalCompra;
+
+        aux = aux->siguiente;
+
+    }
+
+    printf("totalVentas: %f", totalVentas);
+    return totalVentas;
+}
+
