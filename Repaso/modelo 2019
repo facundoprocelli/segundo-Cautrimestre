@@ -1,0 +1,208 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "string.h"
+
+
+
+/*
+1) nodoAuto * crearNodo (automovil auto).
+Crea un nodo de tipo nodoAuto *.
+
+2) void agregarFinal(nodoAuto * * lista, nodoAuto * nuevo).
+Agrega un nuevo nodo al final de la lista (utilizando puntero doble)
+
+3) int insertarCelda(automovil A [ ], int dim, automovil dato, int validos).
+ Inserta el nuevo automóvil en el arreglo, de manera de conservarlo ordenado por valor
+ en forma creciente. válidos es la cantidad de datos que tiene el arreglo y retorna validos+1.
+  Al inicio validos vale 0.
+
+4) void agregarMuchos(nodoAuto * * lista).
+Esta función pide al usuario el ingreso de los datos de un automovil,
+ crea un nodo y lo agrega al final de la lista (invocando a la función 2).
+
+
+
+5) int pasar(nodoAuto * lista, automovil A[ ], int dim).
+Esta función pasa el contenido de la lista al arreglo A, de forma de crear un arreglo ordenado. Para ello debe recorrer la lista e insertar los datos al arreglo usando la función 3.
+
+6) void mostrarArregloRecursivo(automovil A[ ], int i, int pos).
+Muestra el arreglo en forma recursiva, desde la posición cero hasta la posición pos. El parámetro i representa la posición actual del arreglo a mostrar.
+
+7) Hacer una función recursiva que sume el valor de los automóviles de la lista que tengan patente “par”. Además, deberá pensar una función que determine si la patente es par o no. (Aclaración: las patentes tienen el formato “AAA123”, piense cómo hará para evaluar si el componente numérico es par o impar).
+
+8) Hacer una función main() para usar lo anterior.
+
+
+*/
+
+typedef struct
+{
+    char patente[6];
+    int valor;
+    char marca[10];
+} automovil;
+
+typedef struct
+{
+    automovil dato;
+    struct nodoAuto * siguiente;
+} nodoAuto;
+
+
+nodoAuto* crearNodo();
+nodoAuto* buscarUltimo(nodoAuto* lista);
+void mostrarNodo(nodoAuto* lista);
+void mostrarLista(nodoAuto* lista);
+
+
+
+
+int main()
+{
+
+    automovil autos[10];
+
+    nodoAuto* lista = crearNodo();
+    nodoAuto* NN = crearNodo();
+
+    agregarFinal(&lista, NN);
+
+    mostrarLista(lista);
+
+int validos = insertarCelda(autos,10, , 0);
+    return 0;
+}
+
+nodoAuto* iniclista()
+{
+
+    return NULL;
+
+}
+
+nodoAuto* crearNodo()
+{
+    char brand[10];
+    int price;
+    char plate[6];
+
+    nodoAuto* aux = (nodoAuto*)malloc(sizeof(nodoAuto));
+
+    printf("----------Datos------------");
+    printf("\nIngrese la marca del auto: ");
+    fflush(stdin);
+    gets(brand);
+    strcpy(aux->dato.marca, brand);
+
+
+    printf("\nIngrese el precio: ");
+    fflush(stdin);
+    scanf( "%i", &aux->dato.valor);
+
+    printf("\nIngrese la patente: ");
+    fflush(stdin);
+    gets(plate);
+    strcpy( aux->dato.patente, plate);
+
+    aux->siguiente = iniclista();
+
+    return aux;
+}
+
+
+
+
+
+void  agregarFinal(nodoAuto** lista, nodoAuto* NN)
+{
+
+    if(*lista == NULL)
+    {
+        *lista = NN;
+    }
+
+
+    else
+    {
+        nodoAuto* ultimo = buscarUltimo(&lista);
+        ultimo->siguiente = NN;
+
+    }
+
+}
+
+
+nodoAuto* buscarUltimo(nodoAuto* lista)
+{
+
+    nodoAuto* aux = lista;
+
+    if (aux!= NULL)
+    {
+
+        while (aux->siguiente != NULL)
+        {
+
+            aux = aux->siguiente;
+
+        }
+    }
+
+    return aux;
+}
+
+
+
+void mostrarNodo(nodoAuto* lista)
+{
+    printf("\n----------Nodo----------");
+    printf("\n Patente: %s", lista->dato.patente);
+    printf("\n Precio: %i", lista->dato.valor);
+    printf("\n Marca: %s", lista->dato.marca);
+    printf("\n-------------------------");
+
+}
+
+
+void mostrarLista(nodoAuto* lista)
+{
+
+    nodoAuto* aux = lista;
+
+
+    while (aux != NULL)
+    {
+
+        mostrarNodo(aux);
+        aux = aux->siguiente;
+    }
+
+}
+
+
+int insertarCelda(automovil A[], int dim, automovil dato, int validos)
+{
+
+    if (validos < dim)
+    {
+
+        int i = validos-1;
+
+        while (i > 0 && A[i-1].dato > dato.valor)
+        {
+
+            A[i] = A[i-1];
+            i--;
+
+            validos++;
+        }
+    }
+
+    return validos;
+}
+
+
+
+
+
