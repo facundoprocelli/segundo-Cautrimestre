@@ -245,7 +245,10 @@ nodo2* moverLista(nodo2* lista2, nodo* lista){
 
       nodo2*  NN = crearNodo2(lista->dato);
        lista2 =  agregarOrdenado2(lista2, NN);
+
+       nodo* aux = lista;
         lista = lista->sig;
+        free(aux);
 
     }
 
