@@ -1,0 +1,592 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "string.h"
+
+typedef struct
+{
+
+    int dato;
+    struct nodo* sig;
+
+} nodo;
+
+typedef struct
+{
+    int dato;
+    struct nodo2* sig;
+    struct nodo2* ante;
+
+} nodo2;
+
+
+
+
+/*
+1. Crear una lista enlazada de números enteros positivos al azar, la
+inserción se realiza por el último nodo.
+2. Recorrer la lista para mostrar los elementos por pantalla (dos
+funciones):
+a. Mostrarlos de izquierda a derecha
+b. Mostrarlos de derecha a izquierda
+
+3. Hacer una función que retorne la cantidad de nodos de la lista.
+
+4. Eliminar un nodo de la lista en la posición “x”, sabiendo que el usuario
+toma en cuenta desde 1. Verificar que no se ingrese una posición
+inexistente.
+
+
+
+5. Eliminar los nodos que sean mayores a un valor ingresado por
+teclado.
+
+
+
+6. Para poder hacer que el punto siguiente funcione correctamente, hay
+que corregir la función “agregarOrdenadoD” de la librería listaDoble
+(hay varios errores).
+
+
+7. Hacer una función que pase los valores de la lista a una lista doble,
+de manera que quede ordenada. La lista original debe quedar
+vacía. OJO! No tienen que quedar nodos en memoria
+inaccesibles.
+8. Hacer una función main () que invoque a las funciones anteriores y
+demuestre el correcto funcionamiento del programa. Utilice las
+variables y funciones que considere necesarias.
+
+*/
+
+
+nodo* buscarUltimo(nodo* lista);
+nodo* iniclista();
+nodo* agregarFinal(nodo* lista, nodo* NN);
+nodo* agregarNodos(nodo* lista);
+nodo* borrarNodoPosicion(nodo* lista, int posicion);
+nodo* borrarNodo(nodo* lista,int pos);
+nodo* borrarNodoValor(nodo* lista,int  validos);
+
+
+nodo2* moverLista(nodo2* lista2, nodo* lista);
+nodo2* crearNodo2(int valor);
+nodo2* iniclista2();
+nodo2* agregarPpio2(nodo2* lista, nodo2* NN);
+
+
+
+
+int main()
+{
+
+    nodo* lista = iniclista();
+    nodo2* lista2 = iniclista2();
+
+    lista = agregarNodos(lista);
+
+    printf("\nizquierda\n");
+
+    mostrarIzquierda(lista);
+
+
+    int cantidad = contarNodos(lista);
+    printf("\nCantidad de nodos: %i", cantidad);
+
+
+/*
+    lista = borrarNodoPosicion(lista, cantidad);
+
+    int valor;
+    printf("Ingrese el valor mayor de la lista");
+    scanf("%i", &valor);
+
+    lista = borrarNodoValor(lista, valor);
+*/
+
+
+
+    lista2 = moverLista(lista2, lista);
+
+    mostrarIzquierda2(lista2);
+
+    return 0;
+}
+
+
+
+
+nodo2* iniclista2()
+{
+    return NULL;
+}
+
+
+
+nodo2* crearNodo2(int valor)
+{
+
+    nodo2* aux = (nodo2*)malloc(sizeof(nodo2));
+
+    aux->dato = valor;
+    aux->sig = iniclista2();
+    aux->ante = iniclista2();
+
+
+    return aux;
+}
+
+void mostrarNodo2(nodo2* lista2){
+
+
+printf("\n-----------Nodo2------------");
+
+printf("%i", lista2->dato);
+
+printf("\n----------------------------");
+
+
+}
+
+void mostrarIzquierda2(nodo2* lista)
+{
+
+    nodo2* aux = lista;
+
+
+    if(aux == NULL)
+    {
+
+    }
+
+    else
+    {
+
+        mostrarNodo2(aux);
+        mostrarIzquierda2(aux->sig);
+    }
+
+}
+
+
+nodo2* agregarPpio2(nodo2* lista, nodo2* NN)
+{
+
+    NN->sig = lista;
+
+    if (lista != NULL)
+    {
+        lista->ante = NN;
+    }
+
+    return lista;
+}
+
+
+nodo2* agregarOrdenado2(nodo2* lista, nodo2* NN)
+{
+
+    if (lista == NULL)
+    {
+
+        lista == NN;
+
+    }
+
+    else if(lista->dato > NN->dato)
+    {
+
+
+        lista = agregarPpio2(lista, NN);
+
+    }
+
+    else
+    {
+
+        nodo2* seg = lista->sig;
+        nodo2* ante = lista;
+
+
+        while ((seg != NULL) &&( seg->dato > NN->dato))
+        {
+
+
+            ante = seg;
+            seg = seg->sig;
+
+        }
+
+
+        NN->sig = seg;
+        NN ->ante = ante;
+
+        ante->sig = NN;
+
+
+        if (seg != NULL)
+        {
+
+            seg->ante = NN;
+
+        }
+
+
+
+    }
+
+    return lista;
+}
+
+
+nodo2* moverLista(nodo2* lista2, nodo* lista){
+
+
+    while (lista != NULL){
+
+
+      nodo2*  NN = crearNodo2(lista->dato);
+       lista2 =  agregarOrdenado2(lista2, NN);
+        lista = lista->sig;
+
+    }
+
+
+
+return lista2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nodo* iniclista()
+{
+    return 0;
+}
+
+
+nodo* crearNodo()
+{
+
+    nodo* aux = (nodo*)malloc(sizeof(nodo));
+
+    aux->dato = rand() % 100;
+
+    aux->sig = iniclista();
+
+    return aux;
+}
+
+
+
+nodo* agregarFinal(nodo* lista, nodo* NN)
+{
+
+    if (lista == NULL)
+    {
+
+
+        lista = NN;
+    }
+
+    else
+    {
+
+        nodo* ultimo = buscarUltimo(lista);
+        ultimo->sig = NN;
+    }
+
+    return lista;
+}
+
+
+nodo* buscarUltimo(nodo* lista)
+{
+
+    nodo* aux = lista;
+
+
+    while (aux->sig != NULL)
+    {
+
+        aux = aux->sig;
+    }
+
+    return aux;
+}
+
+
+nodo* agregarNodos(nodo* lista)
+{
+
+    int dato = 0;
+    int i = 0;
+
+    printf("\n Cuantos numeros quieres agregar? :");
+    scanf("%i", &dato);
+
+    while (i < dato)
+    {
+
+        nodo* NN = crearNodo();
+        lista = agregarFinal(lista, NN);
+        i++;
+    }
+    return lista;
+}
+
+
+void mostrarIzquierda(nodo* lista)
+{
+
+    nodo* aux = lista;
+
+
+    if(aux == NULL)
+    {
+
+    }
+
+    else
+    {
+
+        mostrarNodo(aux);
+        mostrarIzquierda(aux->sig);
+    }
+
+}
+
+
+void mostrarDerecha(nodo* lista)
+{
+
+    nodo* aux = lista;
+
+
+    if(aux == NULL)
+    {
+
+    }
+
+    else
+    {
+
+        mostrarDerecha(aux->sig);
+        mostrarNodo(aux);
+    }
+
+}
+
+void mostrarNodo(nodo* lista)
+{
+
+    printf("\n---------------Nodo-----------");
+    printf("\n  %i", lista->dato);
+    printf("\n------------------------------");
+
+
+}
+
+
+int contarNodos(nodo* lista)
+{
+
+    int i = 0;
+
+    while ( lista != NULL)
+    {
+
+        i++;
+
+        lista = lista->sig;
+    }
+
+    return i;
+}
+
+
+nodo* borrarNodoPosicion(nodo* lista, int validos)
+{
+
+    int i = 0;
+
+    int posicion;
+
+    printf("Ingrese la posicion que desea borrar: ");
+    scanf("%i", &posicion);
+
+
+    if(posicion <= validos)
+    {
+        while (i <= posicion)
+        {
+            if (i == posicion)
+            {
+                lista = borrarNodo(lista, posicion);
+            }
+            i++;
+        }
+    }
+    else
+    {
+
+        printf("\nNo hay tantos elementos\n");
+    }
+    return lista;
+}
+
+
+
+nodo* borrarNodo(nodo* lista,int pos)
+{
+
+    int i = 0;
+    if ( lista != NULL)
+    {
+
+
+
+        if (i == pos)
+        {
+
+            nodo* aux = lista;
+
+            lista = lista->sig;
+            free(aux);
+
+        }
+
+        else
+        {
+            nodo* ante = lista;
+            nodo* seg = lista->sig;
+
+
+
+            while ((i < pos) && (seg != NULL))
+            {
+
+                ante = seg;
+                seg = seg->sig;
+                i = i+1;
+
+            }
+
+            ante->sig = seg->sig;
+
+            free(seg);
+
+
+        }
+    }
+
+    return lista;
+}
+
+
+
+
+
+
+
+
+/*
+nodo* borrarNodoValor(nodo* lista,int  validos)
+{
+
+    int valor;
+    int i  = 0;
+
+    nodo* aux = lista;
+
+    printf("\nIngrese el valor maximo que uiqeras que este en la lista: ");
+    scanf("%i", &valor);
+
+
+    while ((i < validos)&&(aux != NULL))
+    {
+
+        if (aux->dato > valor)
+        {
+
+
+        }
+
+        aux = aux->sig;
+        i++;
+    }
+
+    return lista;
+}
+
+*/
+
+
+
+
+nodo* borrarNodoValor(nodo* lista, int valor)
+{
+
+    if(lista != NULL&&lista->dato > valor) // Si la lista es diferente de NULL y el valor es mayor
+    {
+        //Borramos el nodo
+        nodo* aux = lista;
+        lista = lista->sig;
+        free(aux);
+
+    }
+
+
+    if ( lista != NULL)// Re chequea que no sea NULL
+    {
+        lista->sig = borrarNodoValor(lista->sig, valor);// Llamado recursivo
+        //Acercamiento al corte
+    }
+
+    return lista;//retorno
+}
+
+
+
