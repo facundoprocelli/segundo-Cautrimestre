@@ -373,3 +373,260 @@ nodo* buscarUltimo(nodo* lista)
 */
 
 
+
+
+/// Punto 3
+
+
+typedef struct
+{
+    int nroParcial;
+    char dni[9];
+    char asignatura[20];
+    float Nota;
+} Examen;
+
+typedef struct
+{
+
+    Examen dato;
+    struct nodo2* sig;
+    struct nodo2* ante;
+
+} nodo2;
+
+
+
+
+
+
+
+nodo2* crearNodo(char materia[20], char documento[9], float resultado, int intento);
+nodo2* agregarOrdenado(nodo2* lista, nodo2* NN);
+nodo2* iniclista2();
+void mostrarLista(nodo2* lista);
+nodo2* agregarPpio2(nodo2* lista, nodo2* NN);
+nodo2* borrarNodoDNI(nodo2* lista, char documento[9]);
+
+
+
+int main()
+{
+    nodo2* lista = iniclista2();
+
+
+
+    nodo2* nodoA = crearNodo("Estadística",  "1111111", 9.2, 1);
+    nodo2* nodoB = crearNodo("Estadística",  "2222222", 8.5, 2);
+    nodo2* nodoC = crearNodo("Matemáticas",  "3333333", 7.8, 1);
+    nodo2* nodoD = crearNodo("Matemáticas",  "2222222", 6.5, 1);
+    nodo2* nodoE = crearNodo("Programacion", "5555555", 4.5, 1);
+    nodo2* nodoF = crearNodo("Programacion", "6666666", 3.2, 2);
+    nodo2* nodoG = crearNodo("Laboratorio",  "7777777", 6.3, 1);
+    nodo2* nodoH = crearNodo("Laboratorio",  "8888888", 5.1, 2);
+
+
+
+    lista = agregarOrdenado(lista, nodoA);
+    lista = agregarOrdenado(lista, nodoB);
+    lista = agregarOrdenado(lista, nodoC);
+    lista = agregarOrdenado(lista, nodoD);
+    lista = agregarOrdenado(lista, nodoE);
+    lista = agregarOrdenado(lista, nodoF);
+    lista = agregarOrdenado(lista, nodoG);
+    lista = agregarOrdenado(lista, nodoH);
+
+
+    mostrarLista(lista);
+
+
+    printf("\n------------------------------------\n");
+
+
+    for ( int i = 0; i < 7; i++){
+
+    lista = borrarNodoDNI(lista, "2222222");
+
+    }
+
+
+    mostrarLista(lista);
+
+
+    return 0;
+}
+
+
+nodo2* iniclista2()
+{
+    return NULL;
+}
+
+
+nodo2* crearNodo(char materia[20], char documento[9], float resultado, int intento)
+{
+
+    nodo2* aux = (nodo2*)malloc(sizeof(nodo2));
+
+    strcpy(aux->dato.asignatura, materia);
+    strcpy(aux->dato.dni, documento);
+    aux->dato.Nota = resultado;
+    aux->dato.nroParcial = intento;
+
+    aux->sig = iniclista2();
+    aux->ante = iniclista2();
+
+
+    return aux;
+}
+
+nodo2* agregarPpio2(nodo2* lista, nodo2* NN)
+{
+
+    NN->sig = lista;
+
+
+    if (lista != NULL)
+    {
+
+        lista->ante = NN;
+    }
+
+
+
+    return NN;
+}
+
+
+
+
+nodo2* agregarOrdenado(nodo2* lista, nodo2* NN)
+{
+
+    nodo2* ant = iniclista2();
+    nodo2* seg = iniclista2();
+
+
+    if (lista == NULL)
+    {
+
+        lista = NN;
+    }
+
+    else if(strcmpi(NN->dato.dni, lista->dato.dni) > 0)
+    {
+
+
+        lista = agregarPpio2(lista, NN);
+
+    }
+
+    else
+    {
+
+        seg = lista->sig;
+        ant = lista;
+
+
+
+        while ((seg!= NULL) && (strcmpi(NN->dato.dni, seg->dato.dni) < 0))
+        {
+
+            ant = seg;
+            seg = seg->sig;
+
+        }
+
+
+
+        NN->sig = seg;
+        NN->ante = ant;
+
+        ant->sig = NN;
+
+
+        if(seg != NULL)
+        {
+
+            seg->ante = NN;
+        }
+    }
+    return lista;
+}
+
+
+
+void mostrarNodo(nodo2* lista)
+{
+
+    printf("\n\n-----------------------------\n");
+    printf("\nAsegnatura: %s", lista->dato.asignatura);
+    printf("\nDNI: %s", lista->dato.dni);
+    printf("\nNota: %.2f", lista->dato.Nota);
+    printf("\nIntento: %i", lista->dato.nroParcial);
+
+
+}
+
+
+void mostrarLista(nodo2* lista)
+{
+
+    nodo2* aux = lista;
+
+    while ( aux != NULL)
+    {
+
+
+        mostrarNodo(aux);
+        aux = aux->sig;
+    }
+
+}
+
+
+nodo2* borrarNodoDNI(nodo2* lista, char documento[9]){
+
+
+if(lista != NULL){
+
+
+    if  (strcmpi(lista->dato.dni, documento ) == 0){
+
+        nodo2* aux = lista;
+
+        lista = lista->sig;
+
+
+        if ( lista != NULL){
+
+            lista->ante = NULL;
+        }
+        free(aux);
+
+    }
+    else {
+
+        nodo2* seg = lista->sig;
+        nodo2* ant = lista;
+
+        while ((seg->sig != NULL) &&  (strcmpi(seg->dato.dni, documento ) !=0)){
+
+
+            ant = seg;
+            seg = seg->sig;
+
+        }
+
+        if(strcmpi(seg->dato.dni, documento ) ==0){
+        ant->sig = seg->sig;
+
+        free(seg);
+    }
+    }
+}
+
+return lista;
+}
+
+
