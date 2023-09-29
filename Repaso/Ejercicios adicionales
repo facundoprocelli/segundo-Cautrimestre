@@ -423,7 +423,7 @@ int main()
     nodo2* nodoE = crearNodo("Programacion", "5555555", 4.5, 1);
     nodo2* nodoF = crearNodo("Programacion", "6666666", 3.2, 2);
     nodo2* nodoG = crearNodo("Laboratorio",  "7777777", 6.3, 1);
-    nodo2* nodoH = crearNodo("Laboratorio",  "8888888", 5.1, 2);
+    nodo2* nodoH = crearNodo("Laboratorio",  "6666666", 5.1, 2);
 
 
 
@@ -439,19 +439,19 @@ int main()
 
     mostrarLista(lista);
 
+    /*
+        printf("\n------------------------------------\n");
 
-    printf("\n------------------------------------\n");
+        for ( int i = 0; i < 7; i++)
+        {
+            lista = borrarNodoDNI(lista, "2222222");
+        }
+        mostrarLista(lista);
+    */
 
 
-    for ( int i = 0; i < 7; i++){
 
-    lista = borrarNodoDNI(lista, "2222222");
-
-    }
-
-
-    mostrarLista(lista);
-
+    calcularPromedios(lista);
 
     return 0;
 }
@@ -585,48 +585,94 @@ void mostrarLista(nodo2* lista)
 }
 
 
-nodo2* borrarNodoDNI(nodo2* lista, char documento[9]){
+nodo2* borrarNodoDNI(nodo2* lista, char documento[9])
+{
 
 
-if(lista != NULL){
+    if(lista != NULL)
+    {
 
 
-    if  (strcmpi(lista->dato.dni, documento ) == 0){
+        if  (strcmpi(lista->dato.dni, documento ) == 0)
+        {
 
-        nodo2* aux = lista;
+            nodo2* aux = lista;
 
-        lista = lista->sig;
-
-
-        if ( lista != NULL){
-
-            lista->ante = NULL;
-        }
-        free(aux);
-
-    }
-    else {
-
-        nodo2* seg = lista->sig;
-        nodo2* ant = lista;
-
-        while ((seg->sig != NULL) &&  (strcmpi(seg->dato.dni, documento ) !=0)){
+            lista = lista->sig;
 
 
-            ant = seg;
-            seg = seg->sig;
+            if ( lista != NULL)
+            {
+
+                lista->ante = NULL;
+            }
+            free(aux);
 
         }
+        else
+        {
 
-        if(strcmpi(seg->dato.dni, documento ) ==0){
-        ant->sig = seg->sig;
+            nodo2* seg = lista->sig;
+            nodo2* ant = lista;
 
-        free(seg);
+            while ((seg->sig != NULL) &&  (strcmpi(seg->dato.dni, documento ) !=0))
+            {
+
+
+                ant = seg;
+                seg = seg->sig;
+
+            }
+
+            if(strcmpi(seg->dato.dni, documento ) ==0)
+            {
+                ant->sig = seg->sig;
+
+                free(seg);
+            }
+        }
     }
-    }
+
+    return lista;
 }
 
-return lista;
+
+
+
+void calcularPromedios(nodo2* lista)
+{
+
+
+    while (lista!= NULL)
+    {
+
+        int i = 1;
+        float resultado = lista->dato.Nota;
+        nodo2* seg = lista->sig;
+
+        while((seg != NULL) && strcmpi(seg->dato.dni, lista->dato.dni) == 0)
+        {
+
+            lista = seg;
+            seg = seg->sig;
+
+
+            resultado = resultado + lista->dato.Nota;
+            i++;
+        }
+
+        resultado = resultado / i;
+
+        printf("\n--------------------");
+        printf("\nDNI: %s", lista->dato.dni);
+        printf("\nPromeido de nota: %f", resultado);
+
+        lista = seg;
+    }
+
+
+
+
 }
 
 
