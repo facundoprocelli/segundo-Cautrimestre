@@ -1,0 +1,375 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "string.h"
+
+
+/*
+
+1. Dada una lista simplemente enlazada cargada con valores enteros de manera
+ordenada (menor a mayor), eliminar los elementos que se encuentran repetidos.
+
+2. Dadas dos listas A y B cargadas con números enteros de manera ordenada, insertar
+en una 3er lista la intersección de ambas.
+
+3. Sea la siguiente estructura de las notas de exámenes de un alumno de una
+determinada materia:
+    Typedef struct {
+    int nroParcial;
+    char dni[9];
+    char asignatura[20];
+    float Nota;
+    }Examen;
+
+Tener en cuenta que la numeración de las notas debe ser del 1 al 10.
+
+    a. Crear la estructura de una lista doblemente enlazada que contenga
+como campo un dato de tipo Examen.
+
+    b. Declarar una lista y cargar los datos ordenados por DNI.
+
+    c. Eliminar de la lista aquellos nodos que contengan un DNI en
+particular. (Tener en cuenta que puede existir más de 1).
+
+    d. Realizar un algoritmo que informe el promedio de nota por DNI de una
+asignatura en particular.
+
+    e. (Recursivo) Verificar si existe un determinado DNI en una asignatura
+dada.
+
+    f. (Recursivo) Mostrar todos los nodos con DNI, Nro. parcial y Nota de
+una asignatura en particular.
+
+    g. (Recursivo) Devolver la cantidad de alumnos(DNI) de una asignatura
+en particular. Tener en cuenta de NO contar dos veces el mismo DNI,
+pensar bien la resolución.
+
+    4. Pasar a un arreglo dinámico del tamaño justo aquellos DNI que pertenezcan a una
+asignatura en particular. (Utilizar función del inciso 3g)
+*/
+
+
+
+
+
+
+
+
+/// Punto 1
+
+/*
+
+typedef struct
+{
+
+    int dato;
+    struct nodo* sig;
+
+} nodo;
+
+nodo* borrarRepetido(nodo* lista);
+nodo* iniclista();
+nodo* crearNodo(int n);
+
+
+
+int main()
+{
+
+    nodo* listaA = iniclista();
+
+    // Crear nodos con datos del 1 al 5
+    nodo* nodo1 = crearNodo(1);
+    nodo* nodo2 = crearNodo(2);
+    nodo* nodo3 = crearNodo(2);
+    nodo* nodo4 = crearNodo(5);
+    nodo* nodo5 = crearNodo(5);
+
+    // Conectar nodos en orden
+    listaA = nodo1;
+    nodo1->sig = nodo2;
+    nodo2->sig = nodo3;
+    nodo3->sig = nodo4;
+    nodo4->sig = nodo5;
+
+    mostrarLista(listaA);
+    listaA = borrarRepetido(listaA);
+
+    mostrarLista(listaA);
+
+
+    return 0;
+}
+
+nodo* iniclista()
+{
+    return NULL;
+}
+
+
+nodo* crearNodo(int n)
+{
+
+    nodo* aux = (nodo*)malloc(sizeof(nodo));
+
+    aux->dato = n;
+    aux->sig = iniclista();
+
+    return aux;
+}
+
+
+
+
+
+nodo* borrarRepetido(nodo* lista)
+{
+
+    nodo* actual = lista;
+    nodo* seg = lista->sig;
+
+    while (actual != NULL && seg != NULL)
+    {
+        if (actual->dato == seg->dato)
+        {
+            nodo* repetido = seg;
+            actual->sig = repetido->sig;
+            seg = repetido->sig;
+            free(repetido);
+        }
+        else
+        {
+
+            actual = actual->sig;
+            seg = seg->sig;
+        }
+    }
+
+    return lista;
+}
+
+
+
+
+
+void mostrarLista(nodo* lista)
+{
+
+    nodo* aux = lista;
+
+    while (aux != NULL)
+    {
+
+        printf("\n %i", aux->dato);
+        aux = aux->sig;
+    }
+
+
+}
+
+
+*/
+
+
+
+/// Punto 2
+
+/*
+
+typedef struct
+{
+
+    int dato;
+    struct nodo* sig;
+} nodo;
+
+
+
+nodo* buscarUltimo(nodo* lista);
+nodo* iniclista();
+nodo* crearNodo(int n);
+nodo* agregarFinal(nodo*lista, nodo* NN);
+nodo* mezclarListas(nodo* lista1, nodo* lista2);
+
+
+
+
+
+int main()
+{
+
+    nodo* listaA = iniclista();
+    nodo* listaB = iniclista();
+
+    // Crear nodos con datos del 1 al 5
+    nodo* nodoA1 = crearNodo(1);
+    nodo* nodoA2 = crearNodo(3);
+    nodo* nodoA3 = crearNodo(5);
+    nodo* nodoA4 = crearNodo(7);
+
+
+
+
+    nodo* nodoB1 = crearNodo(2);
+    nodo* nodoB2 = crearNodo(4);
+    nodo* nodoB3 = crearNodo(6);
+    nodo* nodoB4 = crearNodo(8);
+
+
+    // Conectar nodos en orden
+    listaA = nodoA1;
+    nodoA1->sig = nodoA2;
+    nodoA2->sig = nodoA3;
+    nodoA3->sig = nodoA4;
+
+    listaB = nodoB1;
+    nodoB1->sig = nodoB2;
+    nodoB2->sig = nodoB3;
+    nodoB3->sig = nodoB4;
+
+    printf("\nlista A \n");
+    mostrarLista(listaA);
+
+    printf("\nLista B\n");
+    mostrarLista(listaB);
+
+
+        nodo* listaC = mezclarListas(listaA, listaB);
+        printf("\n Lista C\n");
+        mostrarLista(listaC);
+
+    return 0;
+}
+
+
+nodo* mezclarListas(nodo* lista1, nodo* lista2)
+{
+
+    nodo* lista3 = iniclista();
+        nodo* proximo = NULL;
+
+    while (lista1 != NULL && lista2 != NULL)
+    {
+
+        printf("\npase por el while\n");
+
+
+        if(lista1->dato <= lista2->dato)
+        {
+            printf("\n Lista 1 es mas chica\n");
+            proximo = crearNodo(lista1->dato);
+            lista1 = lista1->sig;
+
+        }
+        else
+        {
+            printf("\n Lista 2 es mas chica\n");
+
+            proximo = crearNodo(lista2->dato);
+            lista2 =  lista2->sig;
+        }
+
+        lista3 = agregarFinal(lista3, proximo);
+    }
+
+
+
+    while (lista1 != NULL){
+
+        proximo = crearNodo(lista1->dato);
+        agregarFinal(lista3, proximo);
+        lista1 = lista1->sig;
+    }
+
+    while (lista2 != NULL){
+
+        proximo = crearNodo(lista2->dato);
+        agregarFinal(lista3, proximo);
+        lista2 = lista2->sig;
+    }
+
+
+
+    return lista3;
+}
+
+
+void mostrarLista(nodo* lista)
+{
+
+    nodo* aux = lista;
+
+
+    while (aux != NULL)
+    {
+
+
+        printf("\n %i", aux->dato);
+        aux = aux->sig;
+    }
+
+
+
+}
+
+nodo* iniclista()
+{
+    return NULL;
+}
+
+
+nodo* crearNodo(int n)
+{
+
+    nodo* aux = (nodo*)malloc(sizeof(nodo));
+
+    aux->dato = n;
+    aux->sig = iniclista();
+
+    return aux;
+}
+
+
+
+
+nodo* agregarFinal(nodo* lista, nodo* NN)
+{
+
+    if ( lista == NULL)
+    {
+
+
+        lista = NN;
+    }
+    else
+    {
+
+        nodo* ultimo = buscarUltimo(lista);
+        ultimo->sig = NN;
+
+
+    }
+
+    return lista;
+}
+
+
+
+nodo* buscarUltimo(nodo* lista)
+{
+
+    nodo* aux = lista;
+
+
+    while ( aux->sig != NULL)
+    {
+
+        aux = aux->sig;
+
+    }
+
+    return aux;
+}
+
+*/
+
+
