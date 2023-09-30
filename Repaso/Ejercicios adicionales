@@ -416,13 +416,13 @@ int main()
 
 
 
-    nodo2* nodoA = crearNodo("Estadística",  "1111111", 9.2, 1);
-    nodo2* nodoB = crearNodo("Estadística",  "2222222", 8.5, 2);
-    nodo2* nodoC = crearNodo("Matemáticas",  "3333333", 7.8, 1);
-    nodo2* nodoD = crearNodo("Matemáticas",  "2222222", 6.5, 1);
+    nodo2* nodoA = crearNodo("Estadistica",  "1111111", 9.2, 1);
+    nodo2* nodoB = crearNodo("Estadistica",  "2222222", 8.5, 2);
+    nodo2* nodoC = crearNodo("Matematicas",  "3333333", 7.8, 1);
+    nodo2* nodoD = crearNodo("Matematicas",  "2222222", 6.5, 1);
     nodo2* nodoE = crearNodo("Programacion", "5555555", 4.5, 1);
     nodo2* nodoF = crearNodo("Programacion", "6666666", 3.2, 2);
-    nodo2* nodoG = crearNodo("Laboratorio",  "7777777", 6.3, 1);
+    nodo2* nodoG = crearNodo("Programacion",  "7777777", 6.3, 1);
     nodo2* nodoH = crearNodo("Laboratorio",  "6666666", 5.1, 2);
 
 
@@ -449,9 +449,17 @@ int main()
         mostrarLista(lista);
     */
 
-
-
+    /*
     calcularPromedios(lista);
+
+    */
+
+
+    char materia[20];
+    printf("\n\nIngrese la materia que desea buscar: ");
+    gets(materia);
+
+    mostrarAsignatura(lista, materia);
 
     return 0;
 }
@@ -665,14 +673,35 @@ void calcularPromedios(nodo2* lista)
 
         printf("\n--------------------");
         printf("\nDNI: %s", lista->dato.dni);
-        printf("\nPromeido de nota: %f", resultado);
+        printf("\nPromeido de nota: %.3f", resultado);
 
         lista = seg;
     }
 
 
+}
 
 
+void mostrarAsignatura(nodo2* lista, char materia[])
+{
+
+    nodo2* aux = lista;
+
+    if (aux == NULL) // Caso base
+    {
+    }
+
+    else
+    {
+
+        if(strcmpi(aux->dato.asignatura, materia) == 0)
+        {
+
+            mostrarNodo(aux);
+        }
+        mostrarAsignatura(aux->sig, materia);// Llamado recursivo
+        // Acercamiento al corte
+    }
 }
 
 
