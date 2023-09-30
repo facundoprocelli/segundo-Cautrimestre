@@ -407,6 +407,7 @@ nodo2* iniclista2();
 void mostrarLista(nodo2* lista);
 nodo2* agregarPpio2(nodo2* lista, nodo2* NN);
 nodo2* borrarNodoDNI(nodo2* lista, char documento[9]);
+nodo2* avanzarRepetidos(nodo2* aux, char documento[9]);
 
 
 
@@ -454,12 +455,18 @@ int main()
 
     */
 
+    /*
+        char materia[20];
+        printf("\n\nIngrese la materia que desea buscar: ");
+        gets(materia);
+    */
 
-    char materia[20];
-    printf("\n\nIngrese la materia que desea buscar: ");
-    gets(materia);
+    // mostrarAsignatura(lista, materia);
 
-    mostrarAsignatura(lista, materia);
+
+    int totals = contarAlumnosRecursivo(lista, "programacion");
+
+    printf("\n Totales: %i ", totals);
 
     return 0;
 }
@@ -703,5 +710,60 @@ void mostrarAsignatura(nodo2* lista, char materia[])
         // Acercamiento al corte
     }
 }
+
+
+
+
+
+
+nodo2* avanzarRepetidos(nodo2* aux, char documento[])
+{
+
+
+    if (aux!= NULL)
+    {
+        nodo2* proximo = aux->sig;
+
+        if(proximo != NULL)
+        {
+            if((strcmpi(documento,aux->dato.dni) == 0))
+            {
+
+                aux = avanzarRepetidos(proximo, documento);
+            }
+        }
+    }
+    return aux;
+}
+
+
+
+
+
+int contarAlumnosRecursivo(nodo2* lista, char materia[])
+{
+
+    int rta = 0;
+
+    if ( lista != NULL)
+    {
+
+        if ( strcmpi(lista->dato.asignatura, materia) == 0)
+        {
+            rta = 1;
+            lista = avanzarRepetidos(lista, lista->dato.dni);
+
+
+        }
+        rta += contarAlumnosRecursivo(lista->sig, materia);
+
+
+    }
+    else
+    {
+    }
+    return rta;
+}
+
 
 
