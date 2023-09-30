@@ -716,24 +716,24 @@ void mostrarAsignatura(nodo2* lista, char materia[])
 
 
 
-nodo2* avanzarRepetidos(nodo2* aux, char documento[])
+nodo2* avanzarRepetidos(nodo2* aux)
 {
 
 
-    if (aux!= NULL)
+    if (aux!= NULL) // mientras no sea NULL
     {
-        nodo2* proximo = aux->sig;
+        nodo2* proximo = aux->sig; // Declaro un seg
 
-        if(proximo != NULL)
+        if(proximo != NULL) // Si este no es null
         {
-            if((strcmpi(documento,aux->dato.dni) == 0))
+            if((strcmpi(proximo->dato.dni,aux->dato.dni) == 0)) // Me fijo que los DNI sea iguales 
             {
 
-                aux = avanzarRepetidos(proximo, documento);
+                aux = avanzarRepetidos(proximo);// si son iguales avanzo
             }
         }
     }
-    return aux;
+    return aux;// retorno la ultima posicion con ese DNI
 }
 
 
@@ -743,26 +743,26 @@ nodo2* avanzarRepetidos(nodo2* aux, char documento[])
 int contarAlumnosRecursivo(nodo2* lista, char materia[])
 {
 
-    int rta = 0;
+    int rta = 0; // declaro rta
 
-    if ( lista != NULL)
+    if ( lista != NULL // si no es NULL
     {
 
-        if ( strcmpi(lista->dato.asignatura, materia) == 0)
+        if ( strcmpi(lista->dato.asignatura, materia) == 0) // comparo si la materia es correcta
         {
-            rta = 1;
-            lista = avanzarRepetidos(lista, lista->dato.dni);
+            rta = 1; // si es correcta rta = 1, osea suma
+            lista = avanzarRepetidos(lista, lista->dato.dni); // Me muevo a la ultima posicion con ese DNI
 
 
         }
-        rta += contarAlumnosRecursivo(lista->sig, materia);
+        rta += contarAlumnosRecursivo(lista->sig, materia); // Sumo el contdor y hago el llamado recursivo
 
 
     }
     else
     {
     }
-    return rta;
+    return rta; // retorno el total 
 }
 
 
