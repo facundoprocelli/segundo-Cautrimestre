@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Lib.h"
+
+
+
+
+typedef struct {
+nodo* lista;
+}Pila;
+
+
+nodo* crearNodo( int dato);
+nodo* cargarLista(nodo* lista);
+nodo* tope ( Pila* p);
+void borrarPrimerNodo(nodo** lista);
+
+
+
+
+
+int main()
+{
+
+
+    Pila* a = inicpila(&a);
+
+    apilar(&a, 5);
+    apilar(&a, 6);
+    apilar(&a, 7);
+    apilar(&a, 8);
+    apilar(&a, 9);
+
+        nodo* max = tope(&a);
+        mostrarNodo(max);
+
+        desapilar(&a);
+
+        max = tope(&a);
+        mostrarNodo(max);
+
+
+        mostrarPila(&a);
+
+    return 0;
+}
+
+
+
+
+
+
+
+nodo* cargarLista(nodo* lista)
+{
+
+    int dato;
+
+    nodo* nuevoNodo = inicLista();
+
+    for (int i = 0; i <5; i++)
+    {
+
+        printf("\n Ingrese un dato: ");
+        scanf("%i", &dato);
+        nuevoNodo = crearNodo(dato);
+
+        lista = agregarOrdenado(lista, nuevoNodo);
+
+    }
+    return lista;
+}
+
+
+nodo * crearNodo( int dato)
+{
+    nodo * aux = (nodo*) malloc(sizeof(nodo));
+    aux->edad =  dato;
+    aux->siguiente=NULL;
+    return aux;
+}
+
+//------------------------------------------------------------------------
+//------------------------------------------------------------------------
+
+void inicpila(Pila* p){
+
+p->lista = inicLista();
+}
+
+
+
+void apilar(Pila* p, int dato){
+
+nodo* NN = crearNodo(dato);
+p->lista = agregarPpio(p->lista, NN);
+
+}
+
+
+void mostrarPila(Pila* p){
+
+while (p->lista != NULL){
+
+    mostrarNodo(p->lista);
+    p->lista = p->lista->siguiente;
+
+}
+
+}
+
+
+
+nodo* tope ( Pila* p){
+return p->lista;
+}
+
+
+void desapilar(Pila* p){
+
+nodo* aux = p->lista;
+
+borrarPrimerNodo(&(p->lista));
+
+return aux;
+
+}
+
+
+void borrarPrimerNodo(nodo** lista){
+
+if (lista){
+
+
+    nodo* aux = *lista;
+
+
+    *lista = (*lista)->siguiente;
+
+
+    free(aux);
+
+    }
+}
+
+
+
