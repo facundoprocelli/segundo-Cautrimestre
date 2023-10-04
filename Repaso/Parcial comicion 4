@@ -1,0 +1,378 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+typedef struct
+{
+
+    int id;
+    char nombre[20];
+    char posicion[20];
+    int curso;
+    int puntosGanados;
+    char equipo[20];
+} stJugador;
+
+
+
+typedef struct
+{
+
+    stJugador dato;
+    struct nodo2* ante;
+    struct nodo2* sig;
+} nodo2;
+
+
+
+typedef struct
+{
+
+    int dato;
+    char equipo[20];
+    struct nodo* sig;
+
+} nodo;
+
+nodo2* inicLista2();
+nodo2* crearNodo(int ID, char NAME[20], char POS[20], int CURSO, int PUNTOS, char TEAM[20]);
+void agregarPpio(nodo2** lista, nodo2* NN);
+int sumarPuntosEquipos(nodo2* lista, char equipo[20]);
+void buscarJugador(nodo2* lista, char equipo[20], char nombre[20]);
+nodo2* borrarNodoCursos(nodo2* lista, int curso);
+
+
+nodo* crearNodo1(int puntos, char equipo[]);
+nodo* agregarPpio1(nodo* lista, nodo* NN);
+nodo* inicLista();
+nodo* agregarPuntosPorEquipo(nodo* lista, nodo2* lista2);
+
+int main()
+{
+
+    nodo* lista1 = inicLista();
+    nodo2* lista = inicLista2();
+
+    nodo2* NN = inicLista2();
+    nodo2* NN1 = inicLista2();
+    nodo2* NN2 = inicLista2();
+    nodo2* NN3 = inicLista2();
+
+    NN = crearNodo(1,"facu", "atak", 4, 100, "meh");
+    NN1 = crearNodo(2,"santi", "atak", 4, 10, "loco");
+    NN2 = crearNodo(3,"lucas", "atak",3, 25, "loco");
+    NN3 = crearNodo(4,"charly", "opa",3, 60, "no");
+    NN3 = crearNodo(4,"fasd", "opa",3, 100, "np");
+
+    agregarPpio(&lista, NN);
+    agregarPpio(&lista, NN1);
+    agregarPpio(&lista, NN2);
+    agregarPpio(&lista, NN3);
+
+
+    //mostrarLista(lista);
+
+    //int total = sumarPuntosEquipos(lista, "loco");
+    //printf("\n total: %i", total);
+
+    //buscarJugador(lista, "loco", "facu");
+
+    //lista =  borrarNodoCursos(lista, 4);
+
+    // mostrarLista(lista);
+
+    lista1 = agregarPuntosPorEquipo(lista1, lista);
+
+    return 0;
+}
+
+nodo* inicLista()
+{
+
+    return NULL;
+}
+
+
+int contarEquipos(nodo2* lista)
+{
+
+    int total = 0;
+
+    if ( lista != NULL)
+    {
+
+        total++;
+    }
+    while (lista != NULL)
+    {
+
+
+        nodo2* seg = lista->sig;
+        if( (seg != NULL) &&  (strcmp(lista->dato.equipo, seg->dato.equipo ) != 0))
+        {
+
+            total++;
+        }
+        lista = lista->sig;
+    }
+
+
+    return total;
+}
+
+
+
+
+nodo* agregarPuntosPorEquipo(nodo* lista, nodo2* lista2)
+{
+
+
+    while (lista2!= NULL)
+    {
+        nodo2* seg = lista2->sig;
+        if( seg != NULL && strcmpi(lista2->dato.equipo, seg->dato.equipo) != 0)
+        {
+            int puntos = sumarPuntosEquipos(lista2, lista2->dato.equipo);
+
+            nodo* NN =  crearNodo1(puntos, lista2->dato.equipo);
+            lista = agregarPpio1(lista, NN);
+            printf("\nPuntos: %i", lista->dato);
+        }
+        lista2 = lista2->sig;
+    }
+
+    return lista;
+}
+
+
+
+
+nodo* crearNodo1(int puntos, char equipo[])
+{
+
+    nodo* aux = (nodo*)malloc(sizeof(nodo));
+
+    aux->dato = puntos;
+    aux->sig = NULL;
+    strcpy(aux->equipo, equipo);
+
+
+    return aux;
+}
+
+
+
+nodo* agregarPpio1(nodo* lista, nodo* NN)
+{
+
+    if (lista == NULL)
+    {
+
+        lista = NN;
+    }
+    else
+    {
+
+        NN->sig = lista;
+        lista = NN;
+
+    }
+    return lista;
+}
+
+
+
+
+
+
+nodo2* inicLista2()
+{
+    return NULL;
+}
+
+
+nodo2* crearNodo(int ID, char NAME[20], char POS[20], int CURSO, int PUNTOS, char TEAM[20])
+{
+
+    nodo2* aux = (nodo2*)malloc(sizeof(nodo2));
+
+    aux->dato.id = ID;
+    aux->dato.curso = CURSO;
+    aux->dato.puntosGanados = PUNTOS;
+    strcpy(aux->dato.equipo, TEAM);
+    strcpy(aux->dato.nombre, NAME);
+    strcpy(aux->dato.posicion, POS);
+
+    aux->sig = NULL;
+    aux->ante = NULL;
+
+    return aux;
+}
+
+
+
+void agregarPpio(nodo2** lista, nodo2* NN)
+{
+
+
+    if ((*lista) == NULL)
+    {
+        (*lista) = NN;
+
+    }
+
+    else
+    {
+
+        NN->sig = (*lista);
+        (*lista)->ante = NN;
+        (*lista) = NN;
+    }
+
+}
+
+
+
+void mostrarLista(nodo2* lista)
+{
+
+    nodo2* aux = lista;
+
+
+    while (aux != NULL)
+    {
+
+
+        mostrarNodo(aux);
+        aux = aux->sig;
+    }
+
+
+}
+
+
+void mostrarNodo(nodo2* lista)
+{
+
+    printf("\n------------");
+
+    printf("\nID: %i", lista->dato.id);
+    printf("\nNombre: %s",lista->dato.nombre);
+    printf("\nPosicion: %s",lista->dato.posicion );
+    printf("\nCurso: %i",lista->dato.curso);
+    printf("\nPunts: %i",lista->dato.puntosGanados);
+    printf("\nEquipo: %s",lista->dato.equipo);
+
+
+    printf("\n------------");
+
+}
+
+
+
+int sumarPuntosEquipos(nodo2* lista, char equipo[20])
+{
+
+    int contador = 0;
+
+    if ( lista != NULL)
+    {
+        if(strcmpi(lista->dato.equipo, equipo) == 0)
+        {
+            contador += lista->dato.puntosGanados;
+
+
+        }
+        contador += sumarPuntosEquipos(lista->sig, equipo);
+    }
+
+    return contador;
+}
+
+
+
+void buscarJugador(nodo2* lista, char equipo[20], char nombre[20])
+{
+
+
+    if ( lista != NULL)
+    {
+
+
+
+        if (strcmpi(lista->dato.equipo, equipo) == 0)
+        {
+
+
+            if (strcmpi(lista->dato.nombre, nombre) == 0)
+            {
+
+                printf("\n EL jugador %s, del equipo %s, juega en la poscion, %s", lista->dato.nombre, lista->dato.equipo, lista->dato.posicion);
+            }
+        }
+
+        buscarJugador(lista->sig, equipo, nombre);
+    }
+}
+
+
+
+
+
+
+nodo2* borrarNodoCursos(nodo2* piola, int dato) // Paso la lista doble
+{
+    nodo2* lista = piola;
+    while ( piola != NULL)
+    {
+
+        if(lista != NULL) // si no es NULL
+        {
+
+            if(lista->dato.curso == dato) // Si el dato coincide
+            {
+                nodo2* aux = lista; // creo un aux
+
+                lista = lista->sig; // avanza la lista
+                if ( lista!= NULL) // si no es el ultimo elemento
+                {
+                    lista->ante = NULL; // conecto el ante a NULL, ya que es el primero
+                }
+                free(aux); // borro aux
+            }
+            else
+            {
+
+                nodo2* seg = lista; // crea un seg
+
+                while ((seg != NULL) && (seg->dato.curso != dato)) // mientras no sea Null y el dato con sea
+                {
+
+                    seg = seg->sig;// avanzo
+                }
+
+                if(seg!= NULL) // si no es NULL
+                {
+
+                    nodo2* ante = seg->ante; // crea un ante
+                    ante->sig = seg->sig;// enlazo el anterior con el porximo
+                    if(seg->sig) // si seg, no es el ultimo
+                    {
+                        nodo2* sig = seg->sig; // creao sig y guardo la pos siguinete
+                        sig->ante = ante; // Conecto el anterior a sig
+                    }
+                    free(seg); // Elimino seg
+
+                }
+            }
+        }
+        piola = piola->sig;
+    }
+    return lista; // retorno la lista
+}
+
+
+
+
+
