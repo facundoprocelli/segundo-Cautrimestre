@@ -218,48 +218,54 @@ nodo2* buscarUltimo ( nodo2* lista)
 
 
 
-nodo2 * borrarNodo(nodo2* lista, int dato)
+
+nodo2* borrarNodo(nodo2* lista, int dato) // Paso la lista doble 
 {
 
-    if (lista!= NULL)   // si la lista no esta vacia
+
+    if(lista != NULL) // si no es NULL
     {
-        if (lista->dato == dato)   // si el primero coincide
+
+        if(lista->dato = dato) // Si el dato coincide
         {
+            nodo2* aux = lista; // creo un aux
 
-            nodo2 * aux = lista;  // el nodo aux es igual a lista
-            lista = lista->sig; // enlazo lista al proximo puntero
-
-            if (lista != NULL) // si lista no es NULL
+            lista = lista->sig; // avanza la lista
+            if ( lista!= NULL) // si no es el ultimo elemento
             {
-                lista->ante= NULL;  // Hago que ante sean NULL
+                lista->ante = NULL; // conecto el ante a NULL, ya que es el primero
             }
             free(aux); // borro aux
         }
-
         else
         {
 
-            nodo2* seg = lista-> sig; // creo seg, para usarlo de auxiliar
-            nodo2* ante = lista; // crea ante, para ser un valor anterior al seguidor
+            nodo2* seg = lista; // crea un seg
 
-            while ((seg != NULL) && (seg->dato != dato)) // mientras seg no este vacio y el dato sea difrente al dato
+            while ((seg != NULL) && (seg->dato != dato)) // mientras no sea Null y el dato con sea
             {
 
-                ante = seg; // avanzo ante
-                seg = seg-> sig; // avanzo seg
-
+                seg = seg->sig;// avanzo
             }
 
-            if (seg!= NULL)
+            if(seg!= NULL) // si no es NULL
             {
 
-                ante->sig = seg-> sig;  // Enlazo ante a la proxima posicion de seguidor
+                nodo2* ante = seg->ante; // crea un ante
+                ante->sig = seg->sig;// enlazo el anterior con el porximo
+                if(seg->sig) // si seg, no es el ultimo
+                {
+                    nodo2* sig = seg->sig; // creao sig y guardo la pos siguinete 
+                    sig->ante = ante; // Conecto el anterior a sig
+                }
+                free(seg); // Elimino seg 
 
-                free(seg); // Limpio seguidor
             }
         }
-
     }
+    return lista; // retorno la lista
+}
+
 
     return lista; // retorno lista
 }
