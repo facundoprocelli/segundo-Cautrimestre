@@ -68,7 +68,7 @@ void mostrarPersona(persona per)
 
 }
 
-
+// Cargar un nodo
 
 nodoArbol* cargarNodo(persona per)
 {
@@ -82,6 +82,7 @@ nodoArbol* cargarNodo(persona per)
     return aux;
 }
 
+//Insertar un nodo
 
 nodoArbol* insertarNodo(nodoArbol* raiz, nodoArbol* NN)
 {
@@ -112,6 +113,8 @@ nodoArbol* insertarNodo(nodoArbol* raiz, nodoArbol* NN)
     return raiz;
 }
 
+
+// Mostrar el arbol de diferentes formas
 void inorder(nodoArbol* raiz)
 {
 
