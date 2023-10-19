@@ -1,0 +1,150 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Arboles.h"
+
+
+
+int main()
+{
+
+
+    nodoArbol* arbol = inicarbol();
+
+    persona per1 = cargarPersona(10, "facu", 20);
+    persona per2= cargarPersona(15, "juan", 19);
+    persona per3= cargarPersona(6, "Santi", 22);
+    persona per4= cargarPersona(13, "lucas", 56);
+    persona per5= cargarPersona(3, "emma", 21);
+    persona per6= cargarPersona(7, "gonza", 23);
+    persona per7= cargarPersona(16, "juli", 31);
+
+    nodoArbol* NN1 = cargarNodo(per1);
+    nodoArbol* NN2 = cargarNodo(per2);
+    nodoArbol* NN3= cargarNodo(per3);
+    nodoArbol* NN4 = cargarNodo(per4);
+    nodoArbol* NN5= cargarNodo(per5);
+    nodoArbol* NN6= cargarNodo(per6);
+    nodoArbol* NN7= cargarNodo(per7);
+
+    arbol = insertarNodo(arbol, NN1);
+    arbol = insertarNodo(arbol, NN2);
+    arbol = insertarNodo(arbol, NN3);
+    arbol = insertarNodo(arbol, NN4);
+    arbol = insertarNodo(arbol, NN5);
+    arbol = insertarNodo(arbol, NN6);
+    arbol = insertarNodo(arbol, NN7);
+
+    printf("\n ------------PREORDER-----------");
+    preorder(arbol);
+    printf("\n ------------INORDER-----------");
+    inorder(arbol);
+    printf("\n ------------POSTORDER-----------");
+    postorder(arbol);
+
+    return 0;
+}
+
+
+
+persona cargarPersona(int legajo, char nombre[20], int edad)
+{
+
+    persona aux;
+
+    aux.edad = edad;
+    aux.legajo = legajo;
+    strcpy(aux.nombre, nombre);
+
+    return aux;
+}
+
+void mostrarPersona(persona per)
+{
+    printf("\n------------\n");
+    printf("Legajo: %d\n", per.legajo);
+    printf("Nombre: %s\n", per.nombre);
+    printf("Edad: %d\n", per.edad);
+    printf("\n------------\n");
+
+}
+
+
+
+nodoArbol* cargarNodo(persona per)
+{
+
+    nodoArbol* aux = (nodoArbol*)malloc(sizeof(nodoArbol));
+
+    aux->dato = per;
+    aux->der = inicarbol();
+    aux->izq = inicarbol();
+
+    return aux;
+}
+
+
+nodoArbol* insertarNodo(nodoArbol* raiz, nodoArbol* NN)
+{
+
+    if (raiz == NULL)
+    {
+        raiz = NN;
+    }
+
+    else
+    {
+
+        if(NN->dato.legajo > raiz->dato.legajo)
+        {
+            // Esto es para no perder el rastro de donde viene el nodo
+            raiz->der = insertarNodo(raiz->der, NN);
+
+        }
+        else
+        {
+            // Esto es para no perder el rastro de donde viene el nodo
+            //Ademas de que se queda enlazado el nodo de la izquierda con el que corresponde
+            raiz->izq = insertarNodo(raiz->izq, NN);
+        }
+    }
+
+
+    return raiz;
+}
+
+void inorder(nodoArbol* raiz)
+{
+
+    if(raiz != NULL)
+    {
+        inorder(raiz->izq);
+        mostrarPersona(raiz->dato);
+        inorder(raiz->der);
+
+    }
+
+}
+
+void preorder(nodoArbol* raiz)
+{
+
+    if(raiz != NULL)
+    {
+        mostrarPersona(raiz->dato);
+        preorder(raiz->izq);
+        preorder(raiz->der);
+
+    }
+
+}
+
+void postorder(nodoArbol* raiz)
+{
+
+    if(raiz != NULL)
+    {
+        postorder(raiz->izq);
+        postorder(raiz->der);
+        mostrarPersona(raiz->dato);
+    }
+}
