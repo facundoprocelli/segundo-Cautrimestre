@@ -16,6 +16,10 @@ nodo* crearNodo(persona per);
 nodo* agregarPpio(nodo* lista, nodo* NN);
 nodo* copiarLista( nodoArbol* raiz,  nodo* lista);
 
+nodoArbol* buscarLegajo(nodoArbol* raiz, int legajoBuscado);
+nodoArbol* buscarNombre(nodoArbol* raiz, char nombre[]);
+
+
 int main()
 {
 
@@ -45,21 +49,29 @@ int main()
     arbol = insertarNodo(arbol, NN5);
     arbol = insertarNodo(arbol, NN6);
     arbol = insertarNodo(arbol, NN7);
-    /*
-        printf("\n ------------PREORDER-----------");
-        preorder(arbol);
-        printf("\n ------------INORDER-----------");
-        inorder(arbol);
-        printf("\n ------------POSTORDER-----------");
-        postorder(arbol);
-    */
 
-    nodo* lista = iniclista();
+    printf("\n ------------PREORDER-----------");
+    preorder(arbol);
+    //    printf("\n ------------INORDER-----------");
+    //  inorder(arbol);
+    //printf("\n ------------POSTORDER-----------");
+    //postorder(arbol);
 
-    lista = copiarLista(arbol, lista);
 
-    mostrarLista(lista);
+    //nodo* lista = iniclista();
 
+    //lista = copiarLista(arbol, lista);
+
+    //mostrarLista(lista);
+
+    //nodoArbol* buscado = buscarLegajo(arbol, 13);
+
+    nodoArbol* buscado = buscarNombre(arbol, "lucas");
+if( buscado != NULL){
+    mostrarNodo(buscado);
+} else{
+printf("No se encontró el elemento");
+}
 
     return 0;
 }
@@ -247,8 +259,70 @@ void postorder(nodoArbol* raiz)
 
 
 
+// Buscar un alumno por legajo
+nodoArbol* buscarLegajo(nodoArbol* raiz, int legajoBuscado)
+{
+
+    nodoArbol* rta = inicarbol();
+
+    if(raiz != NULL)
+    {
 
 
+        if (raiz->dato.legajo == legajoBuscado)
+        {
+
+            rta = raiz;
+        }
+        else
+        {
+
+            if (raiz->dato.legajo > legajoBuscado)
+            {
+
+                rta = buscarLegajo(raiz->izq, legajoBuscado);
+            }
+            else
+            {
+
+                rta = buscarLegajo(raiz->der, legajoBuscado);
+            }
+        }
+    }
+    return rta;
+}
+
+// Buscar un alumno por nombre
+
+nodoArbol* buscarNombre(nodoArbol* raiz, char nombre[]){
+
+nodoArbol* rta = inicarbol();
+
+
+
+if(raiz != NULL){
+
+    if(strcmpi(raiz->dato.nombre, nombre) == 0){
+
+        rta = raiz;
+    }
+
+    else{
+
+        rta = buscarNombre(raiz->izq, nombre);
+
+        if(rta == NULL){
+
+            rta = buscarNombre(raiz->der, nombre);
+        }
+
+    }
+
+}
+
+
+return rta;
+}
 
 
 
