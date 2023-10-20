@@ -66,12 +66,7 @@ int main()
 
     //nodoArbol* buscado = buscarLegajo(arbol, 13);
 
-    nodoArbol* buscado = buscarNombre(arbol, "lucas");
-if( buscado != NULL){
-    mostrarNodo(buscado);
-} else{
-printf("No se encontró el elemento");
-}
+    mostrarNombreBuscado(arbol);
 
     return 0;
 }
@@ -292,39 +287,63 @@ nodoArbol* buscarLegajo(nodoArbol* raiz, int legajoBuscado)
     return rta;
 }
 
-// Buscar un alumno por nombre
+/// Buscar un alumno por nombre
 
-nodoArbol* buscarNombre(nodoArbol* raiz, char nombre[]){
+nodoArbol* buscarNombre(nodoArbol* raiz, char nombre[])
+{
 
-nodoArbol* rta = inicarbol();
+    nodoArbol* rta = inicarbol();
 
 
 
-if(raiz != NULL){
+    if(raiz != NULL)
+    {
 
-    if(strcmpi(raiz->dato.nombre, nombre) == 0){
+        if(strcmpi(raiz->dato.nombre, nombre) == 0)
+        {
 
-        rta = raiz;
-    }
+            rta = raiz;
+        }
 
-    else{
+        else
+        {
 
-        rta = buscarNombre(raiz->izq, nombre);
+            rta = buscarNombre(raiz->izq, nombre);
 
-        if(rta == NULL){
+            if(rta == NULL)
+            {
 
-            rta = buscarNombre(raiz->der, nombre);
+                rta = buscarNombre(raiz->der, nombre);
+            }
+
         }
 
     }
 
+
+    return rta;
 }
 
 
-return rta;
+
+void mostrarNombreBuscado(nodoArbol*raiz)
+{
+
+    char persona[20];
+    printf("\nIngrese el nombre que desea buscar: ");
+
+    gets(persona);
+
+
+    nodoArbol* buscado = buscarNombre(raiz, persona);
+
+    if( buscado != NULL)
+    {
+        mostrarNodo(buscado);
+    }
+    else
+    {
+        printf("\nNo se encontr el elemento");
+    }
+
 }
-
-
-
-
-
