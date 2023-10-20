@@ -2,7 +2,19 @@
 #include <stdlib.h>
 #include "Arboles.h"
 
+typedef struct
+{
 
+    persona dato;
+    struct nodo* sig;
+
+
+} nodo;
+
+nodo* iniclista();
+nodo* crearNodo(persona per);
+nodo* agregarPpio(nodo* lista, nodo* NN);
+nodo* copiarLista( nodoArbol* raiz,  nodo* lista);
 
 int main()
 {
@@ -33,16 +45,97 @@ int main()
     arbol = insertarNodo(arbol, NN5);
     arbol = insertarNodo(arbol, NN6);
     arbol = insertarNodo(arbol, NN7);
+    /*
+        printf("\n ------------PREORDER-----------");
+        preorder(arbol);
+        printf("\n ------------INORDER-----------");
+        inorder(arbol);
+        printf("\n ------------POSTORDER-----------");
+        postorder(arbol);
+    */
 
-    printf("\n ------------PREORDER-----------");
-    preorder(arbol);
-    printf("\n ------------INORDER-----------");
-    inorder(arbol);
-    printf("\n ------------POSTORDER-----------");
-    postorder(arbol);
+    nodo* lista = iniclista();
+
+    lista = copiarLista(arbol, lista);
+
+    mostrarLista(lista);
+
 
     return 0;
 }
+
+/// Aca van todas las funciones que son de listas
+
+nodo* iniclista()
+{
+    return NULL;
+}
+
+
+nodo* crearNodo(persona per)
+{
+
+    nodo* aux = (nodo*)malloc(sizeof(nodo));
+    aux->dato = per;
+    aux->sig = iniclista();
+
+
+    return aux;
+}
+
+
+nodo* agregarPpio(nodo* lista, nodo* NN)
+{
+
+
+    if(lista == NULL)
+    {
+        lista = NN;
+    }
+    else
+    {
+
+        NN->sig  = lista;
+        lista = NN;
+    }
+
+    return lista;
+}
+
+void mostrarLista(nodo* lista)
+{
+
+    while(lista != NULL)
+    {
+
+
+        mostrarPersona(lista->dato);
+        lista = lista->sig;
+    }
+}
+
+/// Copiar arbol en una lista simple
+
+nodo* copiarLista(nodoArbol* raiz, nodo* lista)
+{
+
+
+    if(raiz != NULL)
+    {
+
+        lista = copiarLista(raiz->izq, lista);
+        nodo* NN = crearNodo(raiz->dato);
+        lista =  agregarPpio(lista, NN);
+        lista = copiarLista(raiz->der, lista);
+
+    }
+
+
+    return lista;
+}
+
+
+
 
 
 
@@ -151,3 +244,13 @@ void postorder(nodoArbol* raiz)
         mostrarPersona(raiz->dato);
     }
 }
+
+
+
+
+
+
+
+
+
+
