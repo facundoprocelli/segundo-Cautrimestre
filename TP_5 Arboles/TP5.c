@@ -33,6 +33,7 @@ int main()
     persona per5= cargarPersona(3, "emma", 21);
     persona per6= cargarPersona(7, "gonza", 23);
     persona per7= cargarPersona(16, "juli", 31);
+    persona per8= cargarPersona(19, "shuli", 31);
 
     nodoArbol* NN1 = cargarNodo(per1);
     nodoArbol* NN2 = cargarNodo(per2);
@@ -41,6 +42,7 @@ int main()
     nodoArbol* NN5= cargarNodo(per5);
     nodoArbol* NN6= cargarNodo(per6);
     nodoArbol* NN7= cargarNodo(per7);
+    nodoArbol* NN8= cargarNodo(per8);
 
     arbol = insertarNodo(arbol, NN1);
     arbol = insertarNodo(arbol, NN2);
@@ -49,6 +51,7 @@ int main()
     arbol = insertarNodo(arbol, NN5);
     arbol = insertarNodo(arbol, NN6);
     arbol = insertarNodo(arbol, NN7);
+    arbol = insertarNodo(arbol, NN8);
 
     printf("\n ------------PREORDER-----------");
     preorder(arbol);
@@ -66,8 +69,16 @@ int main()
 
     //nodoArbol* buscado = buscarLegajo(arbol, 13);
 
-    mostrarNombreBuscado(arbol);
+    //mostrarNombreBuscado(arbol);
 
+
+    /*
+    int elementos = contarElementos(arbol);
+    printf("\n Cantidad de elemntos:   %i", elementos);
+    */
+
+    int altura = calcularAltura(arbol);
+    printf("\n Altura: %i", altura);
     return 0;
 }
 
@@ -347,3 +358,80 @@ void mostrarNombreBuscado(nodoArbol*raiz)
     }
 
 }
+
+
+
+
+//  Contar los elementos del arbol
+
+
+
+int contarElementos(nodoArbol* raiz)
+{
+
+    int rta = 0;
+
+
+
+    if (raiz != NULL)
+    {
+        rta = 1;
+        rta += contarElementos(raiz->der) + contarElementos(raiz->izq);
+
+    }
+
+
+
+
+
+
+    return rta;
+}
+
+
+// Calcular la altura de un arbol 
+
+
+int calcularAltura(nodoArbol* raiz)
+{
+    int rta = 0;
+
+    if (raiz != NULL)
+    {
+
+
+        int rtaI = calcularAltura(raiz->izq);
+        int rtaD = calcularAltura(raiz->der);
+
+        if(rtaI > rtaD)
+        {
+
+            rta = rtaI + 1;
+        }
+        else
+        {
+            rta = rtaD + 1;
+        }
+
+    }
+
+    return rta;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
