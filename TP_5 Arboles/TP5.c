@@ -19,6 +19,13 @@ nodo* copiarLista( nodoArbol* raiz,  nodo* lista);
 nodoArbol* buscarLegajo(nodoArbol* raiz, int legajoBuscado);
 nodoArbol* buscarNombre(nodoArbol* raiz, char nombre[]);
 
+nodoArbol* borrarNodo(nodoArbol* raiz, int dato);
+nodoArbol* nodoMasIzquierda(nodoArbol* raiz);
+nodoArbol* nodoMasDerecha(nodoArbol* raiz);
+
+
+
+
 
 int main()
 {
@@ -32,8 +39,9 @@ int main()
     persona per4= cargarPersona(13, "lucas", 56);
     persona per5= cargarPersona(3, "emma", 21);
     persona per6= cargarPersona(7, "gonza", 23);
-    persona per7= cargarPersona(16, "juli", 31);
+    persona per7= cargarPersona(17, "juli", 31);
     persona per8= cargarPersona(19, "shuli", 31);
+    persona per9= cargarPersona(16, "shuli", 31);
 
     nodoArbol* NN1 = cargarNodo(per1);
     nodoArbol* NN2 = cargarNodo(per2);
@@ -43,6 +51,7 @@ int main()
     nodoArbol* NN6= cargarNodo(per6);
     nodoArbol* NN7= cargarNodo(per7);
     nodoArbol* NN8= cargarNodo(per8);
+    nodoArbol* NN9= cargarNodo(per9);
 
     arbol = insertarNodo(arbol, NN1);
     arbol = insertarNodo(arbol, NN2);
@@ -52,11 +61,12 @@ int main()
     arbol = insertarNodo(arbol, NN6);
     arbol = insertarNodo(arbol, NN7);
     arbol = insertarNodo(arbol, NN8);
+    arbol = insertarNodo(arbol, NN9);
 
-    printf("\n ------------PREORDER-----------");
-    preorder(arbol);
-    //    printf("\n ------------INORDER-----------");
-    //  inorder(arbol);
+    //printf("\n ------------PREORDER-----------");
+    //preorder(arbol);
+       printf("\n ------------INORDER-----------");
+      inorder(arbol);
     //printf("\n ------------POSTORDER-----------");
     //postorder(arbol);
 
@@ -76,9 +86,21 @@ int main()
     int elementos = contarElementos(arbol);
     printf("\n Cantidad de elemntos:   %i", elementos);
     */
-
+/*
     int altura = calcularAltura(arbol);
     printf("\n Altura: %i", altura);
+
+    int nodosHoja = contarNodosHoja(arbol);
+    printf("\n Nodos Hoja:  %i", nodosHoja);
+*/
+
+arbol = borrarNodo(arbol, 13);
+
+printf("\nborro el 13");
+
+ printf("\n ------------INORDER-----------");
+      inorder(arbol);
+
     return 0;
 }
 
@@ -379,17 +401,11 @@ int contarElementos(nodoArbol* raiz)
         rta += contarElementos(raiz->der) + contarElementos(raiz->izq);
 
     }
-
-
-
-
-
-
     return rta;
 }
 
 
-// Calcular la altura de un arbol 
+
 
 
 int calcularAltura(nodoArbol* raiz)
@@ -420,11 +436,113 @@ int calcularAltura(nodoArbol* raiz)
 
 
 
+int contarNodosHoja(nodoArbol* raiz)
+{
+
+    int rta = 0;
+
+
+    if(raiz != NULL)
+    {
+
+        if(raiz->izq == NULL && raiz->der == NULL)
+        {
+            rta = 1;
+        }
+
+            rta += contarNodosHoja(raiz->izq) + contarNodosHoja(raiz->der);
+    }
+    return rta;
+}
 
 
 
 
+nodoArbol* borrarNodo(nodoArbol* raiz, int dato)
+{
+    if(raiz != NULL)
+    {
 
+        if(raiz->dato.legajo == dato)
+        {
+
+            if(raiz->izq != NULL)
+            {
+
+                nodoArbol* masDerecha = nodoMasDerecha(raiz->izq);
+                raiz->dato.legajo = masDerecha->dato.legajo;
+                raiz->izq = borrarNodo(raiz->izq, masDerecha->dato.legajo);
+            }
+            else if(raiz->der != NULL)
+            {
+                nodoArbol* masIzquierda = nodoMasIzquierda(raiz->der);
+                raiz->dato.legajo = masIzquierda->dato.legajo;
+                raiz->der = borrarNodo(raiz->der, masIzquierda->dato.legajo);
+
+            }
+
+            if (esHoja(raiz) == 1)
+            {
+                free(raiz);
+                raiz = NULL;
+            }
+
+        }
+        else if(dato < raiz->dato.legajo)
+        {
+            raiz->izq =  borrarNodo(raiz->izq, dato);
+        }
+
+        else
+        {
+            raiz->der = borrarNodo(raiz->der, dato);
+
+        }
+    }
+
+    return raiz;
+}
+
+
+
+int esHoja(nodoArbol* raiz)
+{
+
+    if(raiz->der == NULL && raiz->izq == NULL)
+    {
+
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+
+}
+
+
+
+
+nodoArbol* nodoMasDerecha(nodoArbol* raiz){
+
+if(raiz->der != NULL)
+    {
+     raiz = nodoMasDerecha(raiz->der);
+    }
+
+return raiz;
+}
+
+
+nodoArbol* nodoMasIzquierda(nodoArbol* raiz){
+
+if(raiz->izq != NULL)
+    {
+     raiz = nodoMasIzquierda( raiz->izq);
+    }
+
+return raiz;
+}
 
 
 
