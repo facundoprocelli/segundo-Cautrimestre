@@ -49,31 +49,154 @@ nodo* iniclista();
 nodo* agregarPpio(nodo* lista, nodo* NN);
 nodo* crearNodo(notaAlumno dato);
 
+celda cargarCelda(registroArchivo dato, nodo* NN);
+notaAlumno cargarNotaAlumnoDesdeArchivo(registroArchivo dato);
+
+
 
 
 int main()
 {
 
-    //registroArchivo reg = cargarRegistro();
-
-       // mostrarRegistroArchivo(cargarRegistro());
+    celda adl[MAX_DIM];
 
 
-       cargarArchivo();
-       mostrarArchivo();
+    cargarArchivo();
+    mostrarArchivo();
 
-       nodo* lista = iniclista();
+    nodo* lista = iniclista();
 
-       lista = cargarListaDesdeArchivo(lista);
+    lista = cargarListaDesdeArchivo(lista);
 
-       mostrarListaSimple(lista);
+    int validos = cargarArregloDeListas(adl, MAX_DIM);
+
+    mostrarListaSimple(lista);
     return 0;
 }
+
+
 
 nodo* iniclista()
 {
     return NULL;
 }
+
+
+
+int cargarArregloDeListas(celda adl[], int dimension)
+{
+
+int validos = 0;
+printf("ingres0\n");
+
+    FILE* archi = fopen(ARCHIVO_MEZCLADO, "rb");
+
+    registroArchivo dato;
+    notaAlumno alumno;
+
+    printf("declaro cosas\n");
+    while(fread(&dato, sizeof(registroArchivo), 1, archi) == 1 && validos < dimension)
+    {
+puts("entro al bucle\n");
+
+        alumno = cargarNotaAlumnoDesdeArchivo(dato);
+        nodo* NN = crearNodo(alumno);
+        printf("cree el nodo\n");
+
+
+        int pos = buscarPosMateria(adl, dato.materia, validos);
+        printf("Pase la buscar materia\n");
+
+        if (pos == -1)
+        {
+            printf("agrego materia\n");
+            validos  = agregarMateria(adl, dato.materia, validos);
+            pos = validos -1;
+        }
+
+        printf("agrego listas a el arreglo\n");
+        adl[pos].listaDeNotas = agregarPpio(adl[pos].listaDeNotas, NN);
+
+        mostrarListaSimple(adl[pos].listaDeNotas);
+        printf("\n Materia: %S\n", adl[pos].materia);
+    }
+    printf("retorno\n");
+
+    return validos;
+}
+
+int agregarMateria(celda adl[], char materia[], int validos)
+{
+
+    strcpy(adl[validos].materia, materia);
+    adl[validos].listaDeNotas = iniclista();
+    validos++;
+
+
+
+    return validos;
+}
+
+int buscarPosMateria(celda adl[], char materia[], int validos)
+{
+
+
+    int rta = -1;
+
+    int i = 0;
+
+    while (1 < validos && rta == -1)
+    {
+
+        if (strcmpi(adl[i].materia, materia) == 0)
+        {
+
+            rta = 1;
+        }
+        i++;
+    }
+
+    return rta;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+celda cargarCelda(registroArchivo dato, nodo* NN)
+{
+
+    celda aux;
+
+    aux.idMateria = dato.idMateria;
+    strcpy(aux.materia, dato.materia);
+    aux.listaDeNotas = NN;
+
+    return aux;
+}
+
+notaAlumno cargarNotaAlumnoDesdeArchivo(registroArchivo dato)
+{
+
+printf("cargo notas\n");
+    notaAlumno aux;
+
+    aux.legajo = dato.legajo;
+    aux.nota =dato.nota;
+    strcpy(aux.nombreApe, dato.nombreApe);
+
+    return aux;
+}
+
+
 
 registroArchivo cargarRegistro()
 {
@@ -117,12 +240,15 @@ void mostrarRegistroArchivo(registroArchivo aux)
 
 
 
-nodo* cargarListaDesdeArchivo(nodo* lista) {
+nodo* cargarListaDesdeArchivo(nodo* lista)
+{
+
     FILE* archi = fopen(ARCHIVO_MEZCLADO, "rb");
     notaAlumno nuevaNota;
-     registroArchivo aux;
+    registroArchivo aux;
 
-    while (fread(&aux, sizeof(registroArchivo), 1, archi) == 1) {
+    while (fread(&aux, sizeof(registroArchivo), 1, archi) == 1)
+    {
         strcpy(nuevaNota.nombreApe, aux.nombreApe);
         nuevaNota.legajo = aux.legajo;
         nuevaNota.nota = aux.nota;
@@ -142,36 +268,73 @@ nodo* cargarListaDesdeArchivo(nodo* lista) {
 
 
 
-void cargarArchivo(){
 
-FILE* archi = fopen(ARCHIVO_MEZCLADO, "wb");
 
-for (int i = 0; i < 15; i++){
 
-registroArchivo dato = cargarRegistro();
-fwrite(&dato, sizeof(registroArchivo), 1, archi);
 
+
+
+
+
+
+
+
+
+
+
+void cargarArchivo()
+{
+
+    FILE* archi = fopen(ARCHIVO_MEZCLADO, "wb");
+
+    for (int i = 0; i < 15; i++)
+    {
+
+        registroArchivo dato = cargarRegistro();
+        fwrite(&dato, sizeof(registroArchivo), 1, archi);
+
+
+    }
+
+    fclose(archi);
 
 }
 
-fclose(archi);
 
+
+
+
+
+
+
+
+
+
+
+
+void mostrarArchivo()
+{
+
+    FILE* archi = fopen(ARCHIVO_MEZCLADO, "rb");
+    registroArchivo aux;
+
+    while(fread(&aux, sizeof(registroArchivo), 1, archi) == 1)
+    {
+
+        mostrarRegistroArchivo(aux);
+
+    }
+
+
+    fclose(archi);
 }
 
-void mostrarArchivo(){
-
-FILE* archi = fopen(ARCHIVO_MEZCLADO, "rb");
-registroArchivo aux;
-
-while(fread(&aux, sizeof(registroArchivo), 1, archi) == 1){
-
-mostrarRegistroArchivo(aux);
-
-}
 
 
-fclose(archi);
-}
+
+
+
+
 
 
 
@@ -210,97 +373,31 @@ nodo* agregarPpio(nodo* lista, nodo* NN)
 }
 
 
-void mostrarListaSimple(nodo* lista){
-
-while (lista != NULL){
-
-    mostrarNotaAlumno(lista->dato);
-    lista = lista->sig;
-}
-
-}
-
-void mostrarNotaAlumno(notaAlumno aux){
-
-printf("\n................\n");
-printf("Nombre......: %s", aux.nombreApe);
-printf("Nota........: %i\n", aux.nota);
-printf("Legajo......: %i\n", aux.legajo);
-
-
-}
 
 
 
-/*
-
-typedef struct
+void mostrarListaSimple(nodo* lista)
 {
 
-    char nombre[MAX_DIM];
-    char apellido[MAX_DIM];
-    char DNI [MAX_CHAR_DNI];
-    int edad;
-    char direcicon[MAX_DIM];
-    char altura[MAX_DIM_ALTURA];
-    char genero[MAX_DIM];
+    while (lista != NULL)
+    {
 
-} stPersona;
-/// ------------------Cargar una persona-----------------------
+        mostrarNotaAlumno(lista->dato);
+        lista = lista->sig;
+    }
 
-stPersona cargarPersona()
+}
+
+void mostrarNotaAlumno(notaAlumno aux)
 {
 
-    stPersona aux;
-
-    printf("Ingrese el Nombre\n");
-    fflush(stdin);
-    gets(aux.nombre);
-
-    printf("Ingrese el Apellido\n");
-    fflush(stdin);
-    gets(aux.apellido);
+    printf("\n................\n");
+    printf("Nombre......: %s", aux.nombreApe);
+    printf("Nota........: %i\n", aux.nota);
+    printf("Legajo......: %i\n", aux.legajo);
 
 
-    printf("Ingrese el DNI\n");
-    fflush(stdin);
-    gets(aux.DNI);
-
-    printf("Ingrese la edad\n");
-    fflush(stdin);
-    scanf("%i", &aux.edad);
-
-    printf("Ingrese la Direccion\n");
-    fflush(stdin);
-    gets(aux.direcicon);
-
-
-    printf("Ingrese la altura\n");
-    fflush(stdin);
-    gets(aux.altura);
-    printf("Ingrese el Genero\n");
-    fflush(stdin);
-    gets(aux.genero);
-
-
-    return aux;
 }
 
 
-
-void mostrarPersona(stPersona aux)
-{
-printf("\n............................\n");
-    printf("Nombre.......: %s\n",aux.nombre);
-    printf("Apellido.....: %s\n",aux.apellido);
-    printf("DNI..........: %s\n",aux.DNI);
-    printf("Edad.........: %i\n",aux.edad);
-    printf("Direccion....: %s\n",aux.direcicon);
-    printf("Altura.......: %s\n",aux.altura);
-    printf("Genero.......: %s\n",aux.genero);
-}
-
-
-///-------------------------------------------------------------------------
-*/
 
