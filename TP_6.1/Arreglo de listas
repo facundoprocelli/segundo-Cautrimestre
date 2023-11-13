@@ -34,10 +34,21 @@ stAlumno cargarAlumno();
 int main()
 {
     celda adl[20];
-    char materia[30];
+
 
     int validos = agregarNotas(adl, 20);
 
+
+mostrarMateria(adl, validos);
+
+
+    return 0;
+}
+
+
+void mostrarMateria(celda adl[], int validos){
+
+    char materia[30];
     printf("Ingrese la materia que desa Mostrar\n");
     fflush(stdin);
     scanf("%s", &materia);
@@ -47,13 +58,11 @@ int main()
 
     if (pos!= -1){
 
-
         recorrerYmostrar(adl[pos].lista);
     }
 
-    return 0;
-}
 
+}
 
 void recorrerYmostrar(nodo* lista){
 
@@ -80,7 +89,7 @@ int agregarNotas(celda adl[], int dimension)
 
     while (salir == 's' && validos < dimension)
     {
-        printf("\nIngerse la maetria");
+        printf("\n Ingerse la materia: ");
         fflush(stdin);
         scanf("%s", &materia);
 
@@ -90,7 +99,7 @@ int agregarNotas(celda adl[], int dimension)
 
 
         validos = alta(adl, materia, alumno, validos);
-        printf("\n desea continuar? presiones 's'");
+        printf("\n\n Desea continuar? presiones 's' \n");
         fflush(stdin);
         scanf("%c", &salir);
     }
@@ -106,7 +115,7 @@ stAlumno cargarAlumno()
         fflush(stdin);
         gets(dato.alumno);
 
-        printf("\ningrese una nota: ");
+        printf("\n Ingrese una nota: ");
         fflush(stdin);
         scanf("%d", &dato.nota);
 
