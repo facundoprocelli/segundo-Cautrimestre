@@ -1,0 +1,182 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct
+{
+    int nota;
+    char alumno[20];
+}stAlumno;
+
+typedef struct
+{
+    stAlumno datos;
+    struct nodo* sig;
+}nodo;
+
+
+typedef struct{
+
+
+char materia[20];
+nodo* lista;
+}celda;
+
+
+
+nodo* crearNodo(stAlumno dato);
+nodo* agregarPpio(nodo*lista, nodo * NN);
+
+stAlumno cargarAlumno();
+
+
+
+int main()
+{
+    celda adl[20];
+    char materia[30];
+
+    int validos = agregarNotas(adl, 20);
+
+    printf("Ingrese la materia que desa Mostrar\n");
+    fflush(stdin);
+    scanf("%s", &materia);
+
+
+    int pos  = buscarPosMateria(adl, materia, validos);
+
+    if (pos!= -1){
+
+
+        recorrerYmostrar(adl[pos].lista);
+    }
+
+    return 0;
+}
+
+
+void recorrerYmostrar(nodo* lista){
+
+while (lista != NULL){
+
+    printf("\n*******************************\n");
+    printf("Nombre....: %s\n", lista->datos.alumno);
+    printf("Nota......: %i\n", lista->datos.nota);
+    printf("******************************\n");
+
+    lista = lista->sig;
+}
+
+
+
+}
+
+int agregarNotas(celda adl[], int dimension)
+{
+        stAlumno alumno;
+    char materia[20];
+    char salir = 's';
+    int validos = 0;
+
+    while (salir == 's' && validos < dimension)
+    {
+        printf("\nIngerse la maetria");
+        fflush(stdin);
+        scanf("%s", &materia);
+
+
+        alumno= cargarAlumno();
+
+
+
+        validos = alta(adl, materia, alumno, validos);
+        printf("\n desea continuar? presiones 's'");
+        fflush(stdin);
+        scanf("%c", &salir);
+    }
+
+    return validos;
+}
+
+stAlumno cargarAlumno()
+{
+
+    stAlumno dato;
+        printf("\n Ingrese un alumno: ");
+        fflush(stdin);
+        gets(dato.alumno);
+
+        printf("\ningrese una nota: ");
+        fflush(stdin);
+        scanf("%d", &dato.nota);
+
+        return dato;
+}
+
+
+int alta (celda adl[], char materia[], stAlumno alumno, int validos)
+{
+    nodo* aux = crearNodo(alumno);
+    int pos = buscarPosMateria(adl, materia, validos);
+    if ( pos == -1)
+    {
+        validos = agregarMateria(adl, materia, validos);
+        pos = validos - 1;
+    }
+    adl[pos].lista = agregarPpio(adl[pos].lista, aux);
+    return validos;
+}
+
+nodo* crearNodo(stAlumno dato){
+
+nodo* aux = (nodo*)malloc(sizeof(nodo));
+strcpy(aux->datos.alumno, dato.alumno);
+aux->datos.nota = dato.nota;
+aux->sig = NULL;
+return aux;
+
+}
+
+int buscarPosMateria(celda adl[], char materia[], int validos)
+{
+    int rta = -1;
+    int i = 0;
+
+    while ((i< validos) && (rta == -1)){
+
+        if (strcmpi(adl[i].materia, materia) == 0)
+        {
+            rta = i;
+        }
+
+        i++;
+    }
+
+    return rta;
+}
+
+
+int agregarMateria(celda adl[], char materia[], int validos)
+{
+    strcpy(adl[validos].materia, materia);
+    adl[validos].lista = NULL;
+    validos++;
+    return validos;
+}
+
+
+nodo* agregarPpio(nodo*lista, nodo * NN){
+
+if(lista == NULL)
+{
+    lista = NN;
+}
+else{
+
+    NN->sig = lista;
+    lista = NN;
+}
+return lista;
+
+
+}
