@@ -1,0 +1,280 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct
+{
+    char titulo[20];
+    char autor[20];
+    int anioDeLanzamiento;
+
+} stLibro;
+
+typedef struct
+{
+
+    stLibro dato;
+    struct nodoArbol* izq;
+    struct nodoArbol* der;
+
+} nodoArbol;
+
+typedef struct
+{
+
+    char genero[20];
+    nodoArbol* raiz;
+
+} arregloDeArbol;
+
+
+nodoArbol* crearNodoArbol(stLibro libro);
+nodoArbol* insertarNodoArbol(nodoArbol* raiz, nodoArbol* NN);
+stLibro cargarLibro();
+int buscarPosGenero(arregloDeArbol arregloA[], char genero[], int validos);
+void mostrarArregloDeArboles(arregloDeArbol arregloA[], int validos);
+
+
+
+
+int main()
+{
+
+
+    int dimension = 20;
+    arregloDeArbol arregloA[20];
+
+    int validos = agregarLibros(arregloA, dimension);
+
+    int totales = contarElementos(arregloA[0].raiz);
+    printf("\nTotales: %i", totales);
+
+    mostrarArregloDeArboles(arregloA, validos);
+    //printf("%i", validos);
+
+    return 0;
+}
+
+
+int contarElementos(nodoArbol* raiz)
+{
+
+    int rta = 0;
+
+
+
+    if (raiz != NULL)
+    {
+        rta = 1;
+        rta += contarElementos(raiz->der) + contarElementos(raiz->izq);
+
+    }
+    return rta;
+}
+
+
+void mostrarArregloDeArboles(arregloDeArbol arregloA[], int validos){
+
+for (int i = 0; i< validos; i++){
+
+printf("\nGenero: %s", arregloA[i].genero);
+    inorder(arregloA[i].raiz);
+
+}
+
+
+}
+
+
+
+void inorder(nodoArbol* raiz){
+
+
+if (raiz != NULL){
+inorder(raiz->izq);
+mostrarNodoArbol(raiz);
+inorder(raiz->der);
+}
+
+
+}
+
+void mostrarNodoArbol(nodoArbol* aux)
+{
+
+    printf("\n\n Titulo: %s", aux->dato.titulo);
+    printf("\n\n Autor:  %s", aux->dato.autor);
+    printf("\n\n Lanzamiento  %i", aux->dato.anioDeLanzamiento);
+
+}
+
+int agregarLibros(arregloDeArbol arregloA[], int dimension)
+{
+
+    stLibro libro;
+    char respuesta = 's';
+    int validos = 0;
+    char genero[20];
+
+    while ((respuesta == 's') && (validos < dimension))
+    {
+
+        printf("\n Ingrese el genero: ");
+        fflush(stdin);
+        gets(genero);
+
+
+        libro = cargarLibro();
+
+
+        validos = alta(arregloA, genero,libro,validos);
+
+        printf("\nDesea continuar? presione s\n");
+        fflush(stdin);
+        scanf("%c", &respuesta);
+    }
+
+    return validos;
+}
+
+
+int alta(arregloDeArbol arregloA[], char genero[], stLibro libro, int validos)
+{
+
+
+    nodoArbol* aux = crearNodoArbol(libro);
+
+    int pos =-1;
+    pos = buscarPosGenero(arregloA, genero, validos);
+
+    if (pos == -1)
+    {
+
+        validos = agregarGenero(arregloA, genero, validos);
+        pos = validos -1;
+
+    }
+    arregloA[pos].raiz = insertarNodoArbol(arregloA[pos].raiz, aux);
+
+
+
+    return validos;
+
+}
+
+
+nodoArbol* insertarNodoArbol(nodoArbol* raiz, nodoArbol* NN)
+{
+
+
+    if(raiz == NULL)
+    {
+
+        raiz = NN;
+    }
+    else
+    {
+        if (strcmpi(NN->dato.titulo, raiz->dato.titulo) > 0)
+        {
+            raiz->der = insertarNodoArbol(raiz->der, NN);
+        }
+        else
+        {
+            raiz->izq = insertarNodoArbol(raiz->izq, NN);
+        }
+    }
+
+    return raiz;
+}
+
+
+int agregarGenero(arregloDeArbol arregloA[], char genero[], int validos)
+{
+
+    strcpy(arregloA[validos].genero, genero);
+    arregloA[validos].raiz = NULL;
+    validos++;
+    return validos;
+
+
+}
+
+int buscarPosGenero(arregloDeArbol arregloA[], char genero[], int validos)
+{
+
+    int i = 0;
+    int rta =-1;
+
+
+    while ((i < validos) && (rta == -1))
+    {
+
+        if (strcmpi(arregloA[i].genero, genero) == 0)
+        {
+            rta = i;
+        }
+        i++;
+
+    }
+
+    return rta;
+}
+
+
+nodoArbol* crearNodoArbol(stLibro libro)
+{
+
+    nodoArbol* aux = (nodoArbol*)malloc(sizeof(nodoArbol));
+
+    aux->dato = libro;
+    aux->der = NULL;
+    aux->izq = NULL;
+
+
+    return aux;
+}
+
+stLibro cargarLibro()
+{
+
+    stLibro aux;
+
+    printf("\n Ingrese el titulo: ");
+    fflush(stdin);
+    gets(aux.titulo);
+
+    printf("\n Ingrese el Autor: ");
+    fflush(stdin);
+    gets(aux.autor);
+
+    printf("\n Ingrese el anio de lanzamiento: ");
+    fflush(stdin);
+    scanf("%d", &aux.anioDeLanzamiento);
+
+    return aux;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
