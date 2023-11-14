@@ -1,0 +1,249 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_DIM 20
+
+// Definición de la estructura de una tarea
+typedef struct {
+    char nombre[50];
+    char descripcion[100];
+    int completada;
+} stTarea;
+
+// Definición de la estructura del nodo de la lista de tareas
+typedef struct NodoTarea {
+    stTarea tarea;
+    struct NodoTarea* siguiente;
+} NodoListaTarea;
+
+// Definición de la estructura del nodo del árbol de proyectos
+typedef struct NodoProyecto {
+    char nombre[50];
+    NodoListaTarea* listaTareas;
+    struct NodoProyecto* izquierda;
+    struct NodoProyecto* derecha;
+} NodoArbolProyecto;
+
+NodoArbolProyecto* agregarProyecto(NodoArbolProyecto* raiz);
+NodoArbolProyecto* agregarNodoArbol(NodoArbolProyecto* raiz, NodoArbolProyecto* NN);
+NodoArbolProyecto* cargarNuevoProyecto(char nombreTarea[]);
+NodoArbolProyecto* alta(NodoArbolProyecto* raiz, char nombreProyecto[], stTarea tarea);
+
+NodoArbolProyecto* buscarRaiz(NodoArbolProyecto* raiz, char nombreTarea[]);
+NodoListaTarea* crearNodoLista(stTarea tarea);
+
+
+
+NodoListaTarea* agregarPpio(NodoListaTarea* raiz, NodoListaTarea* NN);
+
+stTarea cargarTarea();
+
+
+int main(){
+
+
+NodoArbolProyecto* arbol = NULL;
+
+
+
+
+    arbol = agregarProyecto(arbol);
+
+    mostrarTodo(arbol);
+
+return 0;
+}
+void mostrarTodo(NodoArbolProyecto* aux) {
+    inorder(aux);
+}
+
+void mostrarTareas(stTarea aux) {
+    printf("Nombre de la tarea: %s\n", aux.nombre);
+    printf("Descripción de la tarea: %s\n", aux.descripcion);
+    printf("Estado de la tarea: %i\n", aux.completada);
+    printf("----------------------\n");
+}
+
+void inorder(NodoArbolProyecto* aux) {
+    if (aux != NULL) {
+        inorder(aux->izquierda);
+
+        printf("Nombre del proyecto: %s\n", aux->nombre);
+        printf("Tareas asociadas al proyecto:\n");
+
+        // Mostrar todas las tareas del proyecto
+        NodoListaTarea* listaTareas = aux->listaTareas;
+        while (listaTareas != NULL) {
+            mostrarTareas(listaTareas->tarea);
+            listaTareas = listaTareas->siguiente;
+        }
+
+        printf("\n");
+
+        inorder(aux->derecha);
+    }
+}
+
+
+
+
+
+NodoArbolProyecto* agregarProyecto(NodoArbolProyecto* raiz){
+
+char nombreProyecto[MAX_DIM];
+char resp = 's';
+while (resp == 's'){
+
+
+printf("\nIngrese el nombre del proyecto: ");
+fflush(stdin);
+gets(nombreProyecto);
+
+stTarea tarea;
+tarea = cargarTarea();
+
+raiz = alta(raiz,nombreProyecto, tarea);
+
+
+
+    printf("\n Para seguir presione s:");
+    fflush(stdin);
+    scanf("%c", &resp);
+}
+return raiz;
+}
+
+
+
+NodoArbolProyecto* alta(NodoArbolProyecto* raiz, char nombreProyecto[], stTarea tarea){
+
+
+NodoListaTarea* NN = crearNodoLista(tarea);
+NodoArbolProyecto* raizBuscada = buscarRaiz(raiz, nombreProyecto);
+
+if (raizBuscada == NULL){
+
+    NodoArbolProyecto* nuevoProyecto = cargarNuevoProyecto(nombreProyecto);
+    raiz = agregarNodoArbol( raiz, nuevoProyecto);
+    raizBuscada = raiz;
+
+}
+
+    raizBuscada->listaTareas = agregarPpio(raizBuscada->listaTareas, NN);
+
+
+return raiz;
+}
+stTarea cargarTarea(){
+
+
+
+stTarea aux;
+
+printf("\nIngrese el nombre de la tarea: ");
+fflush(stdin);
+gets(aux.nombre);
+
+printf("\nIngrese la descripcion: ");
+fflush(stdin);
+gets(aux.descripcion);
+
+printf("\n Ingrese 1 activa, 2 terminada.");
+fflush(stdin);
+scanf("%i", &aux.completada);
+
+
+return aux;
+}
+
+
+NodoListaTarea* agregarPpio(NodoListaTarea* raiz, NodoListaTarea* NN){
+
+if (raiz == NULL){
+
+    raiz = NN;
+}
+else{
+
+    NN->siguiente = raiz;
+    raiz = NN;
+}
+
+return raiz;
+}
+
+
+NodoArbolProyecto* agregarNodoArbol(NodoArbolProyecto* raiz, NodoArbolProyecto* NN){
+
+if (raiz == NULL){
+
+    raiz = NN;
+}
+else{
+
+    if(strcmpi(NN->nombre, raiz->nombre) >= 0){
+
+        raiz->derecha = agregarNodoArbol(raiz->derecha, NN);
+    }
+
+    else{
+
+        raiz->izquierda = agregarNodoArbol(raiz->izquierda, NN);
+    }
+}
+
+
+
+return raiz;
+}
+
+NodoArbolProyecto* cargarNuevoProyecto(char nombreTarea[]){
+
+NodoArbolProyecto* aux = (NodoArbolProyecto*)malloc(sizeof(NodoArbolProyecto));
+aux->derecha = NULL;
+aux->izquierda = NULL;
+aux->listaTareas = NULL;
+strcpy(aux->nombre, nombreTarea);
+
+
+return aux;
+}
+
+
+NodoArbolProyecto* buscarRaiz(NodoArbolProyecto* raiz, char nombreTarea[]){
+
+NodoArbolProyecto* rta = NULL;
+
+if (raiz != NULL){
+
+        if(strcmpi(raiz->nombre, nombreTarea) == 0){
+
+            rta = raiz;
+        }
+        else{
+
+
+            if(strcmpi(nombreTarea, raiz->nombre) > 0){
+
+
+                rta = buscarRaiz(raiz->derecha, nombreTarea);
+            }
+            else{
+
+                rta = buscarRaiz(raiz->izquierda, nombreTarea);
+            }
+        }
+}
+
+return rta;
+}
+
+NodoListaTarea* crearNodoLista(stTarea tarea){
+
+NodoListaTarea* NN = (NodoListaTarea*)malloc(sizeof(NodoListaTarea));
+NN->siguiente= NULL;
+NN->tarea = tarea;
+
+return NN;
+}
