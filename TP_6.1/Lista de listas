@@ -1,0 +1,287 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct
+{
+    int nota;
+    char alumno[20];
+} stAlumno;
+
+typedef struct
+{
+    stAlumno datos;
+    struct nodo* sig;
+} nodo;
+
+
+typedef struct
+{
+
+    char materia[20];
+    nodo* lista;
+    struct celda* sig;
+} celda;
+
+
+
+nodo* crearNodo(stAlumno dato);
+nodo* agregarPpio(nodo*lista, nodo * NN);
+nodo* iniclista();
+
+stAlumno cargarAlumno();
+
+celda* iniccelda();
+celda* agregarNotas(celda* ldl);
+celda* alta (celda* ldl, char materia[], stAlumno alumno);
+celda* buscarCeldaMateria(celda* ldl, char materia[]);
+celda* agregarCeldaPpio(celda* ldl, celda* NC);
+celda* crearCeldaMateria(celda* ldl, char materia[]);
+
+void mostrarTodo(celda* ldl);
+void recorrerYmostrar(nodo* lista);
+void mostrarListaMateria(celda* ldl);
+
+
+
+
+int main()
+{
+    
+    celda* ldl = iniccelda();
+
+    ldl =  agregarNotas(ldl);
+
+    mostrarTodo(ldl);
+
+
+    return 0;
+}
+
+
+void mostrarTodo(celda* ldl)
+{
+
+
+    while (ldl != NULL)
+    {
+
+        printf("Materia: %s", ldl->materia);
+        recorrerYmostrar(ldl->lista);
+
+
+        ldl = ldl->sig;
+    }
+
+
+}
+
+void recorrerYmostrar(nodo* lista)
+{
+
+    while (lista != NULL)
+    {
+
+        printf("\n*******************************\n");
+        printf("Nombre....: %s\n", lista->datos.alumno);
+        printf("Nota......: %i\n", lista->datos.nota);
+        printf("******************************\n");
+
+        lista = lista->sig;
+    }
+
+
+
+}
+
+
+
+
+void mostrarListaMateria(celda* ldl)
+{
+
+    char mat[20];
+
+    printf("\n ¿Que materia desea buscar? \n Materia: ");
+    fflush(stdin);
+    gets(mat);
+
+
+    while (ldl != NULL)
+    {
+
+        if (strcmpi(ldl->materia, mat) == 0)
+        {
+            recorrerYmostrar(ldl->lista);
+        }
+
+        ldl = ldl->sig;
+    }
+
+}
+
+
+
+
+celda* iniccelda()
+{
+    return NULL;
+}
+
+celda* agregarNotas(celda* ldl)
+{
+    stAlumno alumno;
+    char materia[20];
+    char salir = 's';
+
+    while (salir == 's')
+    {
+        printf("\n Ingerse la materia: ");
+        fflush(stdin);
+        scanf("%s", &materia);
+
+
+        alumno= cargarAlumno();
+
+
+
+        ldl = alta(ldl, materia, alumno);
+        printf("\n\n Desea continuar? presiones 's' \n");
+        fflush(stdin);
+        scanf("%c", &salir);
+    }
+
+    return ldl;
+}
+
+
+
+celda* alta (celda* ldl, char materia[], stAlumno alumno)
+{
+    nodo* NuevoAlumno = crearNodo(alumno);
+    celda* materiaEncontrada = buscarCeldaMateria(ldl, materia);
+
+
+    if ( materiaEncontrada == NULL)
+    {
+        celda* nuevaCelda = crearCeldaMateria(nuevaCelda, materia);
+        ldl  = agregarCeldaPpio(ldl, nuevaCelda);
+        materiaEncontrada = ldl;
+    }
+
+    materiaEncontrada->lista  = agregarPpio(materiaEncontrada->lista, NuevoAlumno);
+
+    return ldl;
+}
+
+
+
+
+celda* buscarCeldaMateria(celda* ldl, char mat[])
+{
+    celda* seg = ldl;
+    celda* materiaEncontrada = NULL;
+    int flag = 0;
+
+    while (seg != NULL && flag == 0)
+    {
+
+
+        if (strcmpi(seg->materia, mat) == 0)
+        {
+            materiaEncontrada = seg;
+            flag = 1;
+        }
+        seg = seg->sig;
+    }
+
+
+    return materiaEncontrada;
+}
+
+
+celda* agregarCeldaPpio(celda* ldl, celda* NC)
+{
+
+
+    if(ldl == NULL)
+    {
+        ldl = NC;
+    }
+    else
+    {
+        NC->sig = ldl;
+        ldl = NC;
+    }
+
+    return ldl;
+}
+
+
+celda* crearCeldaMateria(celda* ldl, char mat[])
+{
+
+
+    celda* NC = (celda*)malloc(sizeof(celda));
+    strcpy(NC->materia, mat);
+    NC->sig = iniccelda();
+    NC->lista = NULL;
+
+
+    return NC;
+}
+
+
+stAlumno cargarAlumno()
+{
+
+    stAlumno dato;
+    printf("\n Ingrese un alumno: ");
+    fflush(stdin);
+    gets(dato.alumno);
+
+    printf("\n Ingrese una nota: ");
+    fflush(stdin);
+    scanf("%d", &dato.nota);
+
+    return dato;
+}
+
+
+
+
+nodo* crearNodo(stAlumno dato)
+{
+
+    nodo* aux = (nodo*)malloc(sizeof(nodo));
+    strcpy(aux->datos.alumno, dato.alumno);
+    aux->datos.nota = dato.nota;
+    aux->sig = NULL;
+    return aux;
+
+}
+
+
+
+nodo* agregarPpio(nodo*lista, nodo * NN)
+{
+
+    if(lista == NULL)
+    {
+        lista = NN;
+    }
+    else
+    {
+        NN->sig = lista;
+        lista = NN;
+    }
+
+    return lista;
+
+
+}
+
+
+
+
+
