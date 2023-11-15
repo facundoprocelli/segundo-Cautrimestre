@@ -1,0 +1,35 @@
+Para crear un arreglo de listas son los siguientes pasos.
+
+1° declaro las estructuras
+		Una con la lista y otra que se llame celda que va a contener la lista y un identificador ej char
+
+2° Declaro el arreglo de celdas
+
+3° creo una funcion para agregar elementos al arreglo(le paso el arreglo)
+
+agregarElementos()
+
+4° cargo lo que contenga la lista
+
+
+
+5° Ingreso la nueva materia
+
+alta ()
+6° Busco la materia 
+
+7° si lo encuentro, guardo la el nodo en la lista de la posicion encontrada
+
+7.1° Si no lo encuentro agrego un nuevo elemento al arreglo
+
+
+
+
+
+
+
+
+Para pasar un archivo a un arreglo de arboles, lo que tengo que hacer es lo siguiente:
+
+
+Tengo que crear una funicon que reciba el archivo abierto y de ahi darle un compartamiento onorder, haciedno llamados a esa funcion y en el medio hago un fwrite de el nodo actual del arbol
