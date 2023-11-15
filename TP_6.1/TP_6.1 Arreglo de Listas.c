@@ -7,6 +7,8 @@
 #define ARCHIVO_REGISTRO "archivo.bin"
 #define ARCHIVO_REGISTRO_APROBADOS "archivoAprobados.bin"
 
+
+
 typedef struct
 {
     int nota;
@@ -48,37 +50,98 @@ registroArchivo cargarRegistro(celda adl[], int pos, nodo* lista);
 
 int cargarArreglo(celda arregloDeLista[], int dimension);
 
+int pasarDeArchivoToADL (celda adl[], int validos);
+nodo* cargarListaDesdeArchivo(registroArchivo registro);
+
+notaAlumno cargarNotaDesdeArchivo(registroArchivo registro);
 
 
 /// MAIN
 int main()
 {
 
-    fopen(ARCHIVO_REGISTRO, "wb");
-    fopen(ARCHIVO_REGISTRO_APROBADOS, "wb");
-
     int dimension = 20;
 
-    celda arregloDeLista[dimension];
-    int validos = cargarArreglo(arregloDeLista, dimension);
+    // celda arregloDeLista[dimension];
+    // int validos = cargarArreglo(arregloDeLista, dimension);
 
 
-//mostrarArregloDeLista(arregloDeLista, validos);
+    //mostrarArregloDeLista(arregloDeLista, validos);
 
     //recorrerYmostrar(arregloDeLista, validos);
 
 
 
     //pasarDeADLtoArchivo(arregloDeLista, validos);
-    //mostrarArchivo();
+    // mostrarArchivo();
 
-    pasarDeADLtoArchivoAprobados(arregloDeLista, validos);
-    //mostrarArchivo();
+    //pasarDeADLtoArchivoAprobados(arregloDeLista, validos);
     mostrarArchivoAprobados();
 
 
+
+    celda arregloDeAprobados[dimension];
+    int validosAprobados =  pasarDeArchivoToADL(arregloDeAprobados, dimension);
+    printf("\n\nValidos aprobados  %i", validosAprobados);
+
+    recorrerYmostrar(arregloDeAprobados, validosAprobados);
+    //mostrarArregloDeLista(arregloDeAprobados, validosAprobados);
+
     return 0;
 }
+
+
+
+int pasarDeArchivoToADL (celda adl[], int dimension)
+{
+
+    FILE* archi = fopen (ARCHIVO_REGISTRO_APROBADOS, "rb");
+
+    registroArchivo aux;
+    int i = 0;
+    int validos  = 0;
+
+    while ((fread(&aux, sizeof(registroArchivo), 1, archi) > 0) && (validos < dimension) )
+    {
+
+        char materia[20];
+        strcpy(materia, aux.materia);
+
+        notaAlumno nota;
+        nota = cargarNotaDesdeArchivo(aux);
+
+
+         validos = alta(adl,materia,nota, validos);
+
+
+    }
+
+    fclose(archi);
+
+    return validos;
+}
+
+
+
+
+
+notaAlumno cargarNotaDesdeArchivo(registroArchivo registro)
+{
+
+    notaAlumno aux;
+
+    aux.legajo = registro.legajo;
+    aux.nota = registro.nota;
+    strcpy(aux.nombreApe, registro.nombreApe);
+
+
+    return aux;
+}
+
+
+
+
+
 
 void mostrarArregloDeLista(celda adl[], int validos)
 {
@@ -144,7 +207,7 @@ void mostrarRegistroArchivo(registroArchivo aux)
 void pasarDeADLtoArchivo(celda adl[], int validos)
 {
 
-    FILE* archi = fopen(ARCHIVO_REGISTRO, "wb");
+    FILE* archi = fopen(ARCHIVO_REGISTRO, "ab");
 
     for (int i = 0; i < validos; i++)
     {
@@ -414,6 +477,7 @@ notaAlumno cargarNotaAlumno()
 
     return aux;
 }
+
 
 
 
