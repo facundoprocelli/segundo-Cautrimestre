@@ -1,0 +1,153 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+
+typedef struct stPasajero
+{
+    int tipodeboleto; //1 común, 2 jubilado, 3 estudiante
+    float recorridoEnMetrosEstimado;
+    float precioBoleto;
+    char DNI[11];
+} stPasajero ;
+
+typedef struct nodoPasajero
+{
+    stPasajero dato ;
+    struct nodoPasajero* siguiente;
+} nodoPasajero;
+
+/*
+Para gestionar la lista de pasajeros necesitaremos codificar
+
+Agregar un pasajero a la lista doble ordenada por el recorrido estimado que piensa hacer.
+
+Verificar si existe un pasajero por DNI
+
+Eliminar un pasajero por el número de DNI.
+
+Contar pasajeros por tipo de boleto enviado por parámetro.
+*/
+
+stPasajero cargarPasajero();
+nodoPasajero* agregarPasajeros(nodoPasajero* lista);
+nodoPasajero* agregarPpio(nodoPasajero* lista, nodoPasajero* NN);
+nodoPasajero* iniclista();
+nodoPasajero* crearNodo(stPasajero aux);
+
+
+
+int main(){
+
+nodoPasajero* listaPasajeros = iniclista();
+
+listaPasajeros = agregarPasajeros(listaPasajeros);
+mostrarListaSimple(listaPasajeros);
+
+return 0;
+}
+
+void mostrarListaSimple(nodoPasajero* lista){
+
+
+while (lista != NULL){
+
+    mostrarPasajero(lista->dato);
+    lista = lista->siguiente;
+}
+
+
+}
+
+
+void mostrarPasajero(stPasajero aux){
+
+printf("\n==========================================");
+printf("\nDNI...........: %s", aux.DNI);
+printf("\nPrecio........: %.2f", aux.precioBoleto);
+printf("\nRecorrido.....: %.2f", aux.recorridoEnMetrosEstimado);
+printf("\nTipo..........: %i", aux.tipodeboleto);
+printf("\n==========================================");
+
+}
+
+nodoPasajero* agregarPasajeros(nodoPasajero* lista){
+
+char rta = 's';
+
+while (rta == 's'){
+
+    nodoPasajero* NN = crearNodo(cargarPasajero());
+
+    lista = agregarPpio(lista, NN);
+
+
+    printf("\n Para seguir presione 's' \n");
+    fflush(stdin);
+    scanf("%c", &rta);
+}
+
+
+
+
+return lista;
+}
+
+nodoPasajero* crearNodo(stPasajero aux){
+
+nodoPasajero* nodo = (nodoPasajero*)malloc(sizeof(nodoPasajero));
+
+nodo->dato = aux;
+nodo->siguiente = iniclista();
+
+
+return nodo;
+}
+
+nodoPasajero* agregarPpio(nodoPasajero* lista, nodoPasajero* NN){
+
+if (lista == NULL){
+    lista = NN;
+}
+
+else{
+
+NN->siguiente = lista;
+lista = NN;
+}
+
+
+return lista;
+}
+
+nodoPasajero* iniclista(){
+
+return NULL;
+}
+
+stPasajero cargarPasajero(){
+
+stPasajero aux;
+
+printf("\nIngrese el DNI del pasajero: ");
+fflush(stdin);
+gets(aux.DNI);
+
+printf("\n ingrese el precio del boleto: ");
+fflush(stdin);
+scanf("%f", &aux.precioBoleto);
+
+printf("\n Ingrese la distancia: ");
+fflush(stdin);
+scanf("%f", &aux.recorridoEnMetrosEstimado);
+
+printf("\n Ingrese el tipo de pasajero: ");
+fflush(stdin);
+scanf("%i", &aux.tipodeboleto);
+
+
+return aux;
+
+
+}
+
