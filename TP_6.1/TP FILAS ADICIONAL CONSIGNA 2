@@ -17,6 +17,14 @@ typedef struct nodoPasajero
     struct nodoPasajero* siguiente;
 } nodoPasajero;
 
+typedef struct {
+
+    stPasajero dato;
+    struct nodoDoble* sig;
+    struct nodoDoble* ante;
+
+}nodo2;
+
 /*
 Para gestionar la lista de pasajeros necesitaremos codificar
 
@@ -35,15 +43,27 @@ nodoPasajero* agregarPpio(nodoPasajero* lista, nodoPasajero* NN);
 nodoPasajero* iniclista();
 nodoPasajero* crearNodo(stPasajero aux);
 
+nodo2* pasarDeListaToDoble(nodo2* lista2, nodoPasajero* lista);
+nodo2 * crearNodo2(stPasajero dato);
+nodo2* agregarPpio2(nodo2* lista, nodo2* NN);
+nodo2* agregarEnOrden(nodo2* lista, nodo2* NN);
 
-
-int main(){
+nodo2* iniclista2()
+{
+return NULL;
+}
+    int main(){
 
 nodoPasajero* listaPasajeros = iniclista();
 
 listaPasajeros = agregarPasajeros(listaPasajeros);
-mostrarListaSimple(listaPasajeros);
+//mostrarListaSimple(listaPasajeros);
 
+nodo2* listaDoble = iniclista2();
+listaDoble= pasarDeListaToDoble(listaDoble, listaPasajeros);
+
+
+mostrarListaDoble(listaDoble);
 return 0;
 }
 
@@ -151,3 +171,117 @@ return aux;
 
 }
 
+nodo2 * crearNodo2(stPasajero dato)
+{
+
+
+    nodo2 * nuevoNodo = (nodo2*)malloc(sizeof(nodo2));
+
+
+    nuevoNodo->dato = dato ;
+
+    nuevoNodo->sig = NULL;
+    nuevoNodo->ante = NULL;
+    return nuevoNodo;
+}
+
+nodo2* pasarDeListaToDoble(nodo2* lista2, nodoPasajero* lista){
+
+
+while (lista != NULL){
+
+    nodo2* NN = crearNodo2(lista->dato);
+
+    lista2 = agregarEnOrden(lista2, NN);
+
+    lista = lista->siguiente;
+
+
+}
+
+
+
+
+return lista2;
+}
+
+void mostrarListaDoble(nodo2* lista)
+{
+
+    nodo2* seg = lista; // trabajo con una copia para no moficar el original
+
+    while (seg!= NULL)  // Mientras no este en el final
+    {
+
+        mostrarPasajero(seg->dato); // llamo a la funcion mostrar nodo
+        seg = seg ->sig; // avanzo una posicion
+    }
+}
+
+
+nodo2* agregarPpio2(nodo2* lista, nodo2* NN)
+{
+
+
+    NN->sig = lista; // Enlazo la salida de el nodo nuevo a lista
+    //sirve para casos de NULL y de nodo Valido
+
+
+    if ( lista!= NULL)  // si no es NULL
+    {
+        lista-> ante = NN; // anterior es == a nuevo nodo, enlazando la entrada
+    }
+
+    return NN;
+}
+//--------------------------------------------------------------------------------------
+
+
+
+//agregar en orden
+//--------------------------------------------------------------------------------------
+
+nodo2* agregarEnOrden(nodo2* lista, nodo2* NN)
+{
+
+    nodo2* seg = iniclista2();
+    nodo2* ante = iniclista2();
+    if ( lista == NULL)
+    {
+        lista = NN;
+    }
+
+    else if(NN->dato.recorridoEnMetrosEstimado< lista->dato.recorridoEnMetrosEstimado)
+    {
+        lista = agregarPpio2 (lista, NN);
+    }
+
+    else
+    {
+
+        seg = lista->sig;
+
+        ante = lista;
+
+        while ((seg != NULL) && (seg->dato.recorridoEnMetrosEstimado< NN->dato.recorridoEnMetrosEstimado))
+        {
+
+            ante = seg;  // avanza una posicion ante
+            seg = seg->sig; // avanza una posicion seg
+
+        }
+
+        NN->sig = seg; // Enlazo el nuevo nodo a seg, que es una posiicon mas grande
+        NN->ante = ante; // Enlazo el nuevonodo ante, al ante que es una posicion menor
+
+        ante->sig = NN;// conecto la vuelta de el siguinete a NN
+
+        if(seg != NULL)  // Esta sentecia es para que no se romap cuando el NN es el ,mayor de todos
+        {
+            // Porque sino conectariamos el NODO a Nada y se rompe
+            seg-> ante =NN; // conecto el ante de seguidor a la NN
+        }
+    }
+
+    return lista;
+}
