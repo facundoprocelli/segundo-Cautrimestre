@@ -414,3 +414,84 @@ notaAlumno cargarNotaAlumno()
 
     return aux;
 }
+
+
+
+/// Datos para cargar Rapido
+
+
+Estadistica
+Facundo Gonzalez
+9
+1234
+s
+Progra
+Lorena Rodriguez
+4
+5678
+s
+Arqui
+Juan Perez
+7
+9012
+s
+Estadistica
+Maria Garcia
+10
+3456
+s
+Progra
+Alejandro Martinez
+6
+7890
+s
+Arqui
+Ana Fernandez
+2
+2345
+s
+Estadistica
+Martin Lopez
+5
+6789
+s
+Progra
+Carla Silva
+8
+1234
+s
+Arqui
+Pablo Rodriguez
+7
+5678
+s
+Estadistica
+Camila Gonzalez
+6
+9012
+s
+Progra
+Mateo Perez
+9
+3456
+s
+Arqui
+Julia Martinez
+10
+7890
+s
+Estadistica
+Nicolas Fernandez
+8
+2345
+s
+Progra
+Valentina Lopez
+3
+6789
+s
+Arqui
+Santiago Silva
+9
+1234
+s
