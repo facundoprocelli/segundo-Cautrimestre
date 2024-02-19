@@ -1,0 +1,40 @@
+# depslib dependency file v1.0
+1708352417 source:c:\users\facun\onedrive\escritorio\repasofinal\main.c
+	<stdio.h>
+	<stdlib.h>
+	"string.h"
+
+1708366210 source:c:\users\facun\onedrive\escritorio\repasofinal\listasdobles.c
+	<stdio.h>
+	<stdlib.h>
+	"ListasDobles.h"
+
+1708366210 source:c:\users\facun\onedrive\escritorio\repasofinal\filas.c
+	<stdio.h>
+	<stdlib.h>
+
+1708354421 source:c:\users\facun\onedrive\escritorio\repasofinal\arbol.c
+	<stdio.h>
+	<stdlib.h>
+
+1708348907 c:\users\facun\onedrive\escritorio\repasofinal\lista.h
+
+1708348907 c:\users\facun\onedrive\escritorio\repasofinal\arbol.h
+
+1708348907 c:\users\facun\onedrive\escritorio\repasofinal\listasdobles.h
+
+1708351831 source:c:\users\facun\onedrive\escritorio\repasofinal\lista.c
+	<stdlib.h>
+	<stdio.h>
+	"Lista.h"
+
+1708354420 source:c:\users\facun\onedrive\escritorio\repasofinal\arreglodelista.c
+	<stdio.h>
+	<stdlib.h>
+	"string.h"
+
+1708370701 source:c:\users\facun\onedrive\escritorio\repasofinal\filadefila.c
+	<stdio.h>
+	<stdlib.h>
+	"string.h"
+
